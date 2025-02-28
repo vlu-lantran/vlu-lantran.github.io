@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Blind Box Simulator</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      padding-top: 50px;
+      background: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
+      color: #333;
+    }
+    h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+      color: #333;
+      text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+    }
+    #openButton {
+      padding: 10px 20px;
+      font-size: 1.2em;
+      color: #fff;
+      background-color: #ff7e5f;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #openButton:hover {
+      background-color: #feb47b;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 1.5em;
+      color: #333;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+    }
+    img {
+      max-width: 200px;
+      height: auto;
+      margin-top: 10px;
+      border: 2px solid #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <h1>Blind Box Simulator</h1>
+  <button id="openButton">Open Blind Box</button>
+  <div id="result"></div>
+
+  <script>
+    const openButton = document.getElementById('openButton');
+    const resultDiv = document.getElementById('result');
+
+    const items = [
+      { name: "Toco Toco", img: "images/tocotoco.png" },
+      { name: "The Coffee House", img: "images/tch.jpg" },
+      { name: "Saigon Special", img: "images/saigon.jpg" },
+      { name: "Phúc Long", img: "images/phuclong.png" },
+      { name: "Em chỉ định", img: "images/yourchoice.jpg" }
+    ];
+
+    openButton.addEventListener('click', () => {
+      const randomIndex = Math.floor(Math.random() * items.length);
+      const selectedItem = items[randomIndex];
+      resultDiv.innerHTML = `<p>${selectedItem.name}</p><img src="${selectedItem.img}" alt="${selectedItem.name}">`;
+    });
+  </script>
+</body>
+</html>
