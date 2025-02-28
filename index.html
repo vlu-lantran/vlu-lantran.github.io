@@ -17,17 +17,31 @@
       text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
     }
     #openButton {
-      padding: 10px 20px;
-      font-size: 1.2em;
-      color: #fff;
-      background-color: #ff7e5f;
+      position: relative;
+      padding: 0;
       border: none;
-      border-radius: 5px;
+      background: none;
       cursor: pointer;
-      transition: background-color 0.3s ease;
     }
-    #openButton:hover {
-      background-color: #feb47b;
+    #openButton img {
+      max-width: 150px;
+      height: auto;
+      transition: transform 0.3s ease;
+    }
+    #openButton img:hover {
+      transform: scale(1.1);
+    }
+    #openButton:hover::after {
+      content: "Click to open";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 1em;
     }
     #result {
       margin-top: 20px;
@@ -47,7 +61,9 @@
 </head>
 <body>
   <h1>Blind Box Simulator</h1>
-  <button id="openButton">Open Blind Box</button>
+  <button id="openButton">
+    <img src="images/blindbox.jpg" alt="Open Blind Box">
+  </button>
   <div id="result"></div>
 
   <script>
