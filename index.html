@@ -235,60 +235,66 @@
                 <div id="rsvp-container">
                     <h2 class="font-heading text-5xl text-rose-500 mb-4" data-lang-en="Are You Coming?"
                         data-lang-vi="Bạn Sẽ Tham Gia Chứ?">Are You Coming?</h2>
-                    <p class="max-w-2xl mx-auto mb-12 text-lg"
+                    <div class="max-w-2xl mx-auto mb-12"></div>
+                    <p class="text-lg"
                         data-lang-en="Please let us know if you can make it by <strong class='text-rose-600'>August 10, 2025</strong>. We can't wait to see you!"
                         data-lang-vi="Nhớ cho tui biết bạn có thể tham dự trước ngày <strong class='text-rose-600'>10 tháng 8, 2025</strong>. Rất mong được gặp bạn!">
                         Please let us know if you can make it by <strong class="text-rose-600">August 10, 2025</strong>.
                         We can't wait to see you!
                     </p>
-
-                    <form id="rsvpForm" class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-xl"
-                        action="https://script.google.com/macros/s/AKfycbyz0dxDcAgx59Kc_oYQmIf58VfXfwJZSZqp9vlYv_tEpMpA3XikELMmBRGqZqj0LcvvxA/exec"
-                        method="post" target="hidden_iframe">
-                        <div class="mb-6"><label for="name" class="block text-left text-gray-700 text-sm font-bold mb-2"
-                                data-lang-en="Full Name" data-lang-vi="Họ và Tên">Full Name</label><input type="text"
-                                id="name" name="name"
-                                class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400"
-                                required></div>
-                        <div class="mb-6"><label for="email"
-                                class="block text-left text-gray-700 text-sm font-bold mb-2"
-                                data-lang-en="Email Address" data-lang-vi="Địa chỉ Email">Email Address</label><input
-                                type="email" id="email" name="email"
-                                class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400"
-                                required></div>
-                        <div class="mb-6"><label for="classNumber"
-                                class="block text-left text-gray-700 text-sm font-bold mb-2"
-                                data-lang-en="Your Number in Class (e.g., Student ID)"
-                                data-lang-vi="Số thứ tự trong lớp">Your Number in Class (e.g., Student ID)</label><input
-                                type="text" id="classNumber" name="classNumber"
-                                class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400"
-                                required></div>
-                        <div class="mb-8"><label for="guests"
-                                class="block text-left text-gray-700 text-sm font-bold mb-2"
-                                data-lang-en="Number of Guests (including yourself)"
-                                data-lang-vi="Số lượng khách (bao gồm cả bạn)">Number of Guests (including
-                                yourself)</label><input type="number" id="guests" name="guests"
-                                class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400"
-                                min="1" value="1" required></div>
-                        <button type="submit"
-                            class="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105"
-                            data-lang-en="Get My QR Code" data-lang-vi="Lấy Mã QR Của Tôi">Get My QR Code</button>
-                    </form>
+                    <p class="text-sm italic mt-2"
+                        data-lang-en="Contribution: <strong class='font-semibold'>500,000 VND/person</strong> to cover venue and dinner costs (free for children)."
+                        data-lang-vi="Chi phí tham dự: <strong class='font-semibold'>500.000 VNĐ/người</strong> để chi trả cho địa điểm và bữa tối (miễn phí cho trẻ em).">
+                        Contribution: <strong class="font-semibold">500,000 VND/person</strong> to cover venue and
+                        dinner costs (free for children).
+                    </p>
                 </div>
 
-                <div id="qrResult" class="hidden max-w-xl mx-auto bg-white p-8 rounded-lg shadow-xl">
-                    <h3 class="text-2xl font-bold text-green-600 mb-4" data-lang-en="Thank You! Your RSVP is Confirmed."
-                        data-lang-vi="Cảm ơn bạn! Đã xác nhận đăng ký.">Thank You! Your RSVP is Confirmed.</h3>
-                    <p class="mb-6"
-                        data-lang-en="Please save this QR code. You'll need it to check in and for the lucky draw at the event!"
-                        data-lang-vi="Vui lòng lưu lại mã QR này. Bạn sẽ cần nó để check-in và tham gia rút thăm may mắn tại sự kiện!">
-                        Please save this QR code. You'll need it to check in and for the lucky draw at the event!</p>
-                    <div id="qrCodeContainer" class="flex justify-center mb-4"><canvas id="qrCanvas"></canvas></div>
-                    <p class="text-sm text-gray-600"
-                        data-lang-en="You can take a screenshot or right-click to save the image."
-                        data-lang-vi="Bạn có thể chụp màn hình hoặc nhấp chuột phải để lưu ảnh.">You can take a
-                        screenshot or right-click to save the image.</p>
-                </div>
+                <form id="rsvpForm" class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-xl"
+                    action="https://script.google.com/macros/s/AKfycbyz0dxDcAgx59Kc_oYQmIf58VfXfwJZSZqp9vlYv_tEpMpA3XikELMmBRGqZqj0LcvvxA/exec"
+                    method="post" target="hidden_iframe">
+                    <div class="mb-6"><label for="name" class="block text-left text-gray-700 text-sm font-bold mb-2"
+                            data-lang-en="Full Name" data-lang-vi="Họ và Tên">Full Name</label><input type="text"
+                            id="name" name="name"
+                            class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400"
+                            required></div>
+                    <div class="mb-6"><label for="email" class="block text-left text-gray-700 text-sm font-bold mb-2"
+                            data-lang-en="Email Address" data-lang-vi="Địa chỉ Email">Email Address</label><input
+                            type="email" id="email" name="email"
+                            class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400"
+                            required></div>
+                    <div class="mb-6"><label for="classNumber"
+                            class="block text-left text-gray-700 text-sm font-bold mb-2"
+                            data-lang-en="Your Number in Class (e.g., Student ID)"
+                            data-lang-vi="Số thứ tự trong lớp">Your Number in Class (e.g., Student ID)</label><input
+                            type="text" id="classNumber" name="classNumber"
+                            class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400"
+                            required></div>
+                    <div class="mb-8"><label for="guests" class="block text-left text-gray-700 text-sm font-bold mb-2"
+                            data-lang-en="Number of Guests (including yourself)"
+                            data-lang-vi="Số lượng khách (bao gồm cả bạn)">Number of Guests (including
+                            yourself)</label><input type="number" id="guests" name="guests"
+                            class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400"
+                            min="1" value="1" required></div>
+                    <button type="submit"
+                        class="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105"
+                        data-lang-en="Get My QR Code" data-lang-vi="Lấy Mã QR Của Tôi">Get My QR Code</button>
+                </form>
+            </div>
+
+            <div id="qrResult" class="hidden max-w-xl mx-auto bg-white p-8 rounded-lg shadow-xl">
+                <h3 class="text-2xl font-bold text-green-600 mb-4" data-lang-en="Thank You! Your RSVP is Confirmed."
+                    data-lang-vi="Cảm ơn bạn! Đã xác nhận đăng ký.">Thank You! Your RSVP is Confirmed.</h3>
+                <p class="mb-6"
+                    data-lang-en="Please save this QR code. You'll need it to check in and for the lucky draw at the event!"
+                    data-lang-vi="Vui lòng lưu lại mã QR này. Bạn sẽ cần nó để check-in và tham gia rút thăm may mắn tại sự kiện!">
+                    Please save this QR code. You'll need it to check in and for the lucky draw at the event!</p>
+                <div id="qrCodeContainer" class="flex justify-center mb-4"><canvas id="qrCanvas"></canvas></div>
+                <p class="text-sm text-gray-600"
+                    data-lang-en="You can take a screenshot or right-click to save the image."
+                    data-lang-vi="Bạn có thể chụp màn hình hoặc nhấp chuột phải để lưu ảnh.">You can take a
+                    screenshot or right-click to save the image.</p>
+            </div>
             </div>
         </section>
     </main>
