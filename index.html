@@ -1,74 +1,112 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A8 2011 - 14 Year Reunion</title>
     <link rel="icon" type="image/png" href="./images/Nguyen_Thuong_Hien_High_School_(logo).png">
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Dancing+Script:wght@700&display=swap"
+        rel="stylesheet">
+
     <!-- Feather Icons -->
     <script src="https://unpkg.com/feather-icons"></script>
-    
+
     <!-- QR Code Generator Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
 
     <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #FDF8F5; }
-        .font-heading { font-family: 'Dancing Script', cursive; }
-        .hero-bg { background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/A8.jpg'); background-size: cover; background-position: center; background-attachment: fixed; }
-        .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
-        .gallery-item { cursor: pointer; }
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
-                /* --- PASTE THE NEW CSS RULES HERE --- */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #FDF8F5;
+        }
+
+        .font-heading {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .hero-bg {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/A8.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-item {
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
 
         .text-glow {
-          text-shadow: 0 0 8px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 105, 180, 0.4);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 105, 180, 0.4);
         }
 
         .text-gradient {
-          background: linear-gradient(45deg, #FDBA74, #F472B6, #FDBA74);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          text-fill-color: transparent;
-          background-size: 200% 200%;
-          animation: gradient-animation 4s ease infinite;
+            background: linear-gradient(45deg, #FDBA74, #F472B6, #FDBA74);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradient-animation 4s ease infinite;
         }
 
         @keyframes gradient-animation {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
     </style>
 </head>
-<body class="text-gray-700">
 
+<body class="text-gray-700">
+    <!-- Language Switch Button -->
+    <div class="fixed top-4 right-4 z-50">
+        <button id="lang-switch" class="bg-white/30 backdrop-blur-sm text-white py-2 px-4 rounded-full text-sm hover:bg-white/50 transition-colors">
+            Tiếng Việt
+        </button>
+    </div>
+    
     <!-- Hidden iframe for form submission -->
-    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(this.contentWindow.location.href != 'about:blank'){console.log('Form submitted.')}"></iframe>
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"
+        onload="if(this.contentWindow.location.href != 'about:blank'){console.log('Form submitted.')}"></iframe>
 
     <!-- Header / Hero Section -->
     <header id="home" class="hero-bg h-screen flex flex-col items-center justify-center text-white text-center p-4">
-        <h2 class="font-heading text-6xl md:text-7xl mb-2 text-white text-glow">Nguyễn Thượng Hiền High School</h2>
-        <h1 class="text-5xl md:text-7xl font-bold tracking-wider uppercase mb-4 text-gradient text-glow">A8 2011 Reunion</h1>
-        <p class="text-lg md:text-2xl mb-8">Fourteen years have flown by! Let's reconnect and reminisce.</p>
-        
+        <h2 class="font-heading text-6xl md:text-7xl mb-2 text-white text-glow" data-lang-en="Nguyễn Thượng Hiền High School" data-lang-vi="Trường THPT Nguyễn Thượng Hiền">Nguyễn Thượng Hiền High School</h2>
+        <h1 class="text-5xl md:text-7xl font-bold tracking-wider uppercase mb-4 text-gradient text-glow" data-lang-en="A8 2011 Reunion" data-lang-vi="Họp Lớp A8 2011">A8 2011 Reunion</h1>
+        <p class="text-lg md:text-2xl mb-8" data-lang-en="Fourteen years have flown by! Let's reconnect and reminisce." data-lang-vi="Mười bốn năm đã trôi qua! Hãy cùng kết nối và ôn lại kỷ niệm.">Fourteen years have flown by! Let's reconnect and reminisce.</p>
+
         <div id="countdown" class="flex space-x-4 md:space-x-8 text-center">
-            <div><div id="days" class="text-4xl md:text-6xl font-bold">00</div><div class="text-sm uppercase">Days</div></div>
-            <div><div id="hours" class="text-4xl md:text-6xl font-bold">00</div><div class="text-sm uppercase">Hours</div></div>
-            <div><div id="minutes" class="text-4xl md:text-6xl font-bold">00</div><div class="text-sm uppercase">Minutes</div></div>
-            <div><div id="seconds" class="text-4xl md:text-6xl font-bold">00</div><div class="text-sm uppercase">Seconds</div></div>
+            <div><div id="days" class="text-4xl md:text-6xl font-bold">00</div><div class="text-sm uppercase" data-lang-en="Days" data-lang-vi="Ngày">Days</div></div>
+            <div><div id="hours" class="text-4xl md:text-6xl font-bold">00</div><div class="text-sm uppercase" data-lang-en="Hours" data-lang-vi="Giờ">Hours</div></div>
+            <div><div id="minutes" class="text-4xl md:text-6xl font-bold">00</div><div class="text-sm uppercase" data-lang-en="Minutes" data-lang-vi="Phút">Minutes</div></div>
+            <div><div id="seconds" class="text-4xl md:text-6xl font-bold">00</div><div class="text-sm uppercase" data-lang-en="Seconds" data-lang-vi="Giây">Seconds</div></div>
         </div>
-        <a href="#rsvp" class="mt-12 bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105">
+        <a href="#rsvp" class="mt-12 bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105" data-lang-en="RSVP Now" data-lang-vi="Đăng Ký Ngay">
             RSVP Now
         </a>
     </header>
@@ -78,12 +116,12 @@
         <!-- Event Details Section -->
         <section id="details" class="py-20 bg-white fade-in-section">
             <div class="container mx-auto px-6 text-center">
-                <h2 class="font-heading text-5xl text-rose-500 mb-4">The Main Event</h2>
-                <p class="max-w-2xl mx-auto mb-12">Join us for an unforgettable evening of dinner, having fun, and catching up.</p>
+                <h2 class="font-heading text-5xl text-rose-500 mb-4" data-lang-en="The Main Event" data-lang-vi="Sự Kiện Chính">The Main Event</h2>
+                <p class="max-w-2xl mx-auto mb-12" data-lang-en="Join us for an unforgettable evening of dinner, having fun, and catching up." data-lang-vi="Hãy tham gia cùng chúng tôi trong một buổi tối khó quên với ăn uống, vui chơi và trò chuyện.">Join us for an unforgettable evening of dinner, having fun, and catching up.</p>
                 <div class="flex flex-wrap justify-center gap-8 md:gap-16">
-                    <div class="flex flex-col items-center space-y-3"><i data-feather="calendar" class="w-12 h-12 text-rose-500"></i><h3 class="text-xl font-bold">Date & Time</h3><p>Saturday, August 16, 2025</p><p>7:00 PM - 11:00 PM</p></div>
-                    <div class="flex flex-col items-center space-y-3"><i data-feather="map-pin" class="w-12 h-12 text-rose-500"></i><h3 class="text-xl font-bold">Venue</h3><p>Dìn Ký Restaurant</p><p>142/18 Cộng Hòa, Phường 4, Tân Bình</p></div>
-                    <div class="flex flex-col items-center space-y-3"><i data-feather="user" class="w-12 h-12 text-rose-500"></i><h3 class="text-xl font-bold">Dress Code</h3><p>Free Dress</p><p>Look sharp, feel great!</p></div>
+                    <div class="flex flex-col items-center space-y-3"><i data-feather="calendar" class="w-12 h-12 text-rose-500"></i><h3 class="text-xl font-bold" data-lang-en="Date & Time" data-lang-vi="Ngày & Giờ">Date & Time</h3><p data-lang-en="Saturday, August 16, 2025" data-lang-vi="Thứ Bảy, ngày 16 tháng 8, 2025">Saturday, August 16, 2025</p><p data-lang-en="7:00 PM - 11:00 PM" data-lang-vi="19:00 - 23:00">7:00 PM - 11:00 PM</p></div>
+                    <div class="flex flex-col items-center space-y-3"><i data-feather="map-pin" class="w-12 h-12 text-rose-500"></i><h3 class="text-xl font-bold" data-lang-en="Venue" data-lang-vi="Địa Điểm">Venue</h3><p data-lang-en="Dìn Ký Restaurant" data-lang-vi="Nhà hàng Dìn Ký">Dìn Ký Restaurant</p><p>142/18 Cộng Hòa, Phường 4, Tân Bình</p></div>
+                    <div class="flex flex-col items-center space-y-3"><i data-feather="user" class="w-12 h-12 text-rose-500"></i><h3 class="text-xl font-bold" data-lang-en="Dress Code" data-lang-vi="Trang Phục">Dress Code</h3><p data-lang-en="Free Dress" data-lang-vi="Trang phục tự do">Free Dress</p><p data-lang-en="Look sharp, feel great!" data-lang-vi="Lịch sự và thoải mái nhé!">Look sharp, feel great!</p></div>
                 </div>
             </div>
         </section>
@@ -92,37 +130,23 @@
         <section id="story" class="py-20 fade-in-section">
             <div class="container mx-auto px-6 flex flex-wrap items-center">
                 <div class="w-full md:w-1/2 p-4"><img src="images/poster.jpg" alt="Nostalgic photo" class="rounded-lg shadow-2xl w-full"></div>
-                <div class="w-full md:w-1/2 p-4 md:pl-12"><h2 class="font-heading text-5xl text-rose-500 mb-4">A Walk Down Memory Lane</h2><p class="mb-4">Remember the Friday night lights, the cram sessions in the library, the roar of the crowd at pep rallies? We made memories that lasted a lifetime at Nguyễn Thượng Hiền. From awkward freshman photos to the pride of graduation day, we shared a special time together.</p><p>This reunion is more than just a party; it's a chance to relive those moments, laugh about the old times, and see the amazing people we've all become. Let's make some new memories together!</p></div>
+                <div class="w-full md:w-1/2 p-4 md:pl-12">
+                    <h2 class="font-heading text-5xl text-rose-500 mb-4" data-lang-en="A Walk Down Memory Lane" data-lang-vi="Dạo Bước Trên Con Đường Kỷ Niệm">A Walk Down Memory Lane</h2>
+                    <p class="mb-4" data-lang-en="Remember the Friday night lights, the cram sessions in the library, the roar of the crowd at pep rallies? We made memories that lasted a lifetime at Nguyễn Thượng Hiền. From awkward freshman photos to the pride of graduation day, we shared a special time together." data-lang-vi="Bạn còn nhớ những buổi học ôn thi trong thư viện, những tiếng reo hò cổ vũ náo nhiệt? Chúng ta đã tạo nên những kỷ niệm khó phai tại trường Nguyễn Thượng Hiền. Từ những tấm ảnh ngây ngô năm nhất cho đến niềm tự hào trong ngày tốt nghiệp, chúng ta đã cùng nhau chia sẻ một khoảng thời gian thật đặc biệt.">Remember the Friday night lights, the cram sessions in the library, the roar of the crowd at pep rallies? We made memories that lasted a lifetime at Nguyễn Thượng Hiền. From awkward freshman photos to the pride of graduation day, we shared a special time together.</p>
+                    <p data-lang-en="This reunion is more than just a party; it's a chance to relive those moments, laugh about the old times, and see the amazing people we've all become. Let's make some new memories together!" data-lang-vi="Buổi họp lớp này không chỉ là một bữa tiệc; đó là cơ hội để sống lại những khoảnh khắc ấy, cùng cười về những chuyện ngày xưa, và xem tất cả chúng ta đã trở thành những con người tuyệt vời như thế nào. Hãy cùng nhau tạo thêm những kỷ niệm mới nhé!">This reunion is more than just a party; it's a chance to relive those moments, laugh about the old times, and see the amazing people we've all become. Let's make some new memories together!</p>
+                </div>
             </div>
         </section>
 
         <!-- Photo Gallery Section -->
         <section id="gallery" class="py-20 bg-white fade-in-section">
             <div class="container mx-auto px-6 text-center">
-                <h2 class="font-heading text-5xl text-rose-500 mb-4">From the Yearbook</h2>
-                <p class="max-w-2xl mx-auto mb-12">Click on a photo to see more! Got your own? Bring them along!</p>
+                <h2 class="font-heading text-5xl text-rose-500 mb-4" data-lang-en="From the Yearbook" data-lang-vi="Từ Kỷ Yếu">From the Yearbook</h2>
+                <p class="max-w-2xl mx-auto mb-12" data-lang-en="Click on a photo to see more! Got your own? Bring them along!" data-lang-vi="Nhấp vào ảnh để xem thêm! Nếu bạn có ảnh, hãy mang theo nhé!">Click on a photo to see more! Got your own? Bring them along!</p>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    <div class="gallery-item group relative rounded-lg shadow-lg" data-images="images/1.jpg,images/2.jpg,images/3.jpg">
-                        <img src="images/1.jpg" alt="Gallery image 1" class="gallery-image w-full h-full object-cover cursor-pointer
-                        transition-transform duration-1000 ease-in-out
-                        group-hover:absolute group-hover:z-50
-                        group-hover:top-0 group-hover:left-0
-                        group-hover:object-contain group-hover:scale-[2.5]">
-                    </div>
-                    <div class="gallery-item group relative rounded-lg shadow-lg" data-images="images/4.jpg,images/5.jpg,images/6.jpg">
-                        <img src="images/4.jpg" alt="Gallery image 1" class="gallery-image w-full h-full object-cover cursor-pointer
-                        transition-transform duration-1000 ease-in-out
-                        group-hover:absolute group-hover:z-50
-                        group-hover:top-0 group-hover:left-0
-                        group-hover:object-contain group-hover:scale-[2.5]">
-                    </div>
-                    <div class="gallery-item group relative rounded-lg shadow-lg" data-images="images/7.jpg">
-                        <img src="images/7.jpg" alt="Gallery image 1" class="gallery-image w-full h-full object-cover cursor-pointer
-                        transition-transform duration-1000 ease-in-out
-                        group-hover:absolute group-hover:z-50
-                        group-hover:top-0 group-hover:left-0
-                        group-hover:object-contain group-hover:scale-[2.5]">
-                    </div>
+                    <div class="gallery-item group relative rounded-lg shadow-lg" data-images="images/1.jpg,images/2.jpg,images/3.jpg"><img src="images/1.jpg" alt="Gallery image 1" class="gallery-image w-full h-full object-cover cursor-pointer transition-transform duration-1000 ease-in-out group-hover:absolute group-hover:z-50 group-hover:top-0 group-hover:left-0 group-hover:object-contain group-hover:scale-[2.5]"></div>
+                    <div class="gallery-item group relative rounded-lg shadow-lg" data-images="images/4.jpg,images/5.jpg,images/6.jpg"><img src="images/4.jpg" alt="Gallery image 2" class="gallery-image w-full h-full object-cover cursor-pointer transition-transform duration-1000 ease-in-out group-hover:absolute group-hover:z-50 group-hover:top-0 group-hover:left-0 group-hover:object-contain group-hover:scale-[2.5]"></div>
+                    <div class="gallery-item group relative rounded-lg shadow-lg" data-images="images/7.jpg"><img src="images/7.jpg" alt="Gallery image 3" class="gallery-image w-full h-full object-cover cursor-pointer transition-transform duration-1000 ease-in-out group-hover:absolute group-hover:z-50 group-hover:top-0 group-hover:left-0 group-hover:object-contain group-hover:scale-[2.5]"></div>
                 </div>
             </div>
         </section>
@@ -131,43 +155,41 @@
         <section id="rsvp" class="py-20 fade-in-section">
             <div class="container mx-auto px-6 text-center">
                 <div id="rsvp-container">
-                    <h2 class="font-heading text-5xl text-rose-500 mb-4">Are You Coming?</h2>
-                    <p class="max-w-2xl mx-auto mb-12">Please let us know if you can make it by August 10, 2025. We can't wait to see you!</p>
-                    
-                    <form id="rsvpForm" class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-xl" 
-                          action="https://script.google.com/macros/s/AKfycbyz0dxDcAgx59Kc_oYQmIf58VfXfwJZSZqp9vlYv_tEpMpA3XikELMmBRGqZqj0LcvvxA/exec" 
-                          method="post" 
-                          target="hidden_iframe">
-                        <div class="mb-6"><label for="name" class="block text-left text-gray-700 text-sm font-bold mb-2">Full Name</label><input type="text" id="name" name="name" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400" required></div>
-                        <div class="mb-6"><label for="email" class="block text-left text-gray-700 text-sm font-bold mb-2">Email Address</label><input type="email" id="email" name="email" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400" required></div>
-                        <div class="mb-6"><label for="classNumber" class="block text-left text-gray-700 text-sm font-bold mb-2">Your Number in Class (e.g., Student ID)</label><input type="text" id="classNumber" name="classNumber" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400" required></div>
-                        <div class="mb-8"><label for="guests" class="block text-left text-gray-700 text-sm font-bold mb-2">Number of Guests (including yourself)</label><input type="number" id="guests" name="guests" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400" min="1" value="1" required></div>
-                        <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105">Get My QR Code</button>
+                    <h2 class="font-heading text-5xl text-rose-500 mb-4" data-lang-en="Are You Coming?" data-lang-vi="Bạn Sẽ Tham Gia Chứ?">Are You Coming?</h2>
+                    <p class="max-w-2xl mx-auto mb-12" data-lang-en="Please let us know if you can make it by August 10, 2025. We can't wait to see you!" data-lang-vi="Vui lòng cho chúng tôi biết bạn có thể tham dự trước ngày 10 tháng 8, 2025. Rất mong được gặp bạn!">Please let us know if you can make it by August 10, 2025. We can't wait to see you!</p>
+
+                    <form id="rsvpForm" class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-xl" action="https://script.google.com/macros/s/AKfycbyz0dxDcAgx59Kc_oYQmIf58VfXfwJZSZqp9vlYv_tEpMpA3XikELMmBRGqZqj0LcvvxA/exec" method="post" target="hidden_iframe">
+                        <div class="mb-6"><label for="name" class="block text-left text-gray-700 text-sm font-bold mb-2" data-lang-en="Full Name" data-lang-vi="Họ và Tên">Full Name</label><input type="text" id="name" name="name" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400" required></div>
+                        <div class="mb-6"><label for="email" class="block text-left text-gray-700 text-sm font-bold mb-2" data-lang-en="Email Address" data-lang-vi="Địa chỉ Email">Email Address</label><input type="email" id="email" name="email" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400" required></div>
+                        <div class="mb-6"><label for="classNumber" class="block text-left text-gray-700 text-sm font-bold mb-2" data-lang-en="Your Number in Class (e.g., Student ID)" data-lang-vi="Số thứ tự trong lớp">Your Number in Class (e.g., Student ID)</label><input type="text" id="classNumber" name="classNumber" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400" required></div>
+                        <div class="mb-8"><label for="guests" class="block text-left text-gray-700 text-sm font-bold mb-2" data-lang-en="Number of Guests (including yourself)" data-lang-vi="Số lượng khách (bao gồm cả bạn)">Number of Guests (including yourself)</label><input type="number" id="guests" name="guests" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400" min="1" value="1" required></div>
+                        <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105" data-lang-en="Get My QR Code" data-lang-vi="Lấy Mã QR Của Tôi">Get My QR Code</button>
                     </form>
                 </div>
 
                 <div id="qrResult" class="hidden max-w-xl mx-auto bg-white p-8 rounded-lg shadow-xl">
-                    <h3 class="text-2xl font-bold text-green-600 mb-4">Thank You! Your RSVP is Confirmed.</h3>
-                    <p class="mb-6">Please save this QR code. You'll need it to check in and for the lucky draw at the event!</p>
+                    <h3 class="text-2xl font-bold text-green-600 mb-4" data-lang-en="Thank You! Your RSVP is Confirmed." data-lang-vi="Cảm ơn bạn! Đã xác nhận đăng ký.">Thank You! Your RSVP is Confirmed.</h3>
+                    <p class="mb-6" data-lang-en="Please save this QR code. You'll need it to check in and for the lucky draw at the event!" data-lang-vi="Vui lòng lưu lại mã QR này. Bạn sẽ cần nó để check-in và tham gia rút thăm may mắn tại sự kiện!">Please save this QR code. You'll need it to check in and for the lucky draw at the event!</p>
                     <div id="qrCodeContainer" class="flex justify-center mb-4"><canvas id="qrCanvas"></canvas></div>
-                    <p class="text-sm text-gray-600">You can take a screenshot or right-click to save the image.</p>
+                    <p class="text-sm text-gray-600" data-lang-en="You can take a screenshot or right-click to save the image." data-lang-vi="Bạn có thể chụp màn hình hoặc nhấp chuột phải để lưu ảnh.">You can take a screenshot or right-click to save the image.</p>
                 </div>
             </div>
         </section>
     </main>
-    
+
     <footer class="bg-gray-800 text-white py-12 text-center">
         <div class="container mx-auto px-6">
-            <p class="font-heading text-4xl mb-2">See You Soon!</p>
-            <p>&copy; 2025 Lincoln High Class Reunion Committee. All Rights Reserved.</p>
+            <p class="font-heading text-4xl mb-2" data-lang-en="See You Soon!" data-lang-vi="Hẹn Gặp Lại!">See You Soon!</p>
+            <p data-lang-en="&copy; 2025 A8 Reunion Committee. All Rights Reserved." data-lang-vi="&copy; 2025 Ban Tổ Chức Họp Lớp A8. Mọi quyền được bảo lưu.">&copy; 2025 A8 Reunion Committee. All Rights Reserved.</p>
         </div>
     </footer>
 
     <script>
         feather.replace();
 
+        // --- Countdown Timer Logic ---
         const countDownDate = new Date("Aug 16, 2025 19:00:00").getTime();
-        const x = setInterval(function() {
+        const x = setInterval(function () {
             const now = new Date().getTime();
             const distance = countDownDate - now;
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -180,43 +202,36 @@
             document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
             if (distance < 0) {
                 clearInterval(x);
-                document.getElementById("countdown").innerHTML = "<div class='text-3xl font-bold'>The Reunion is Here!</div>";
+                document.getElementById("countdown").innerHTML = "<div class='text-3xl font-bold' data-lang-en='The Reunion is Here!' data-lang-vi='Sự Kiện Đang Diễn Ra!'>The Reunion is Here!</div>";
             }
         }, 1000);
-
+        
+        // --- RSVP Form & QR Code Handling ---
         const rsvpForm = document.getElementById('rsvpForm');
         const rsvpContainer = document.getElementById('rsvp-container');
         const qrResultContainer = document.getElementById('qrResult');
         const submitButton = rsvpForm.querySelector('button[type="submit"]');
-
-        rsvpForm.addEventListener('submit', function(e) {
-            // This function now runs *as* the form is submitting in the background.
-            // We do NOT use e.preventDefault() here.
-            
+        rsvpForm.addEventListener('submit', function (e) {
+            const currentSubmitText = submitButton.innerText;
             submitButton.disabled = true;
-            submitButton.textContent = 'Submitting...';
+            submitButton.innerText = currentLanguage === 'en' ? 'Submitting...' : 'Đang gửi...';
 
-            // We can't know exactly when the iframe submission is complete,
-            // so we'll use a short delay before showing the QR code to the user.
             setTimeout(() => {
                 const name = document.getElementById('name').value;
                 const email = document.getElementById('email').value;
                 const classNumber = document.getElementById('classNumber').value;
-                
                 const qrData = { name: name, email: email, classNumber: classNumber };
                 const qrDataString = JSON.stringify(qrData);
                 const qrCanvas = document.getElementById('qrCanvas');
-
                 QRCode.toCanvas(qrCanvas, qrDataString, { width: 256 }, function (error) {
                     if (error) console.error(error);
-                    
-                    // Hide the form and show the QR code result
                     rsvpContainer.classList.add('hidden');
                     qrResultContainer.classList.remove('hidden');
                 });
-            }, 1500); // Wait 1.5 seconds for the submission to happen.
+            }, 1500);
         });
 
+        // --- Interactive Photo Gallery ---
         const galleryItems = document.querySelectorAll('.gallery-item');
         galleryItems.forEach(item => {
             const images = item.dataset.images.split(',');
@@ -228,6 +243,7 @@
             });
         });
 
+        // --- Scroll Animation Logic ---
         const sections = document.querySelectorAll('.fade-in-section');
         const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
         const observer = new IntersectionObserver((entries, observer) => {
@@ -240,7 +256,30 @@
             });
         }, observerOptions);
         sections.forEach(section => { observer.observe(section); });
+
+        // --- Language Switcher Logic ---
+        const langSwitchButton = document.getElementById('lang-switch');
+        const translatableElements = document.querySelectorAll('[data-lang-en]');
+        let currentLanguage = 'en'; // Default language is English
+
+        langSwitchButton.addEventListener('click', () => {
+            // Toggle language
+            currentLanguage = currentLanguage === 'en' ? 'vi' : 'en';
+            
+            // Update button text
+            langSwitchButton.textContent = currentLanguage === 'en' ? 'Tiếng Việt' : 'English';
+
+            // Update all elements
+            translatableElements.forEach(el => {
+                const text = currentLanguage === 'en' ? el.dataset.langEn : el.dataset.langVi;
+                if (text) {
+                    el.innerText = text;
+                }
+            });
+        });
+
     </script>
 
 </body>
+
 </html>
