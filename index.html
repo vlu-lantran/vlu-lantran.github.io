@@ -1,410 +1,216 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A8 2011 - 14 Year Reunion</title>
-    <link rel="icon" type="image/png" href="./images/Nguyen_Thuong_Hien_High_School_(logo).png">
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Dancing+Script:wght@700&display=swap"
-        rel="stylesheet">
-
-    <!-- Feather Icons -->
-    <script src="https://unpkg.com/feather-icons"></script>
-
-    <!-- QR Code Generator Library -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
-
+    <title>Guide: Create Big Data Cluster Using Docker</title>
     <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #FDF8F5;
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; margin: 20px; color: #333; background-color: #f9f9f9; }
+        .container { max-width: 900px; margin: auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #0056b3; text-align: center; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+        pre { background: #2d2d2d; color: #f0f0f0; padding: 15px; border-radius: 5px; overflow-x: auto; font-family: 'Cascadia Code', 'Consolas', 'Monaco', monospace; margin-bottom: 20px;}
+        .image-placeholder { background: #e9e9e9; border: 2px dashed #ccc; padding: 20px; text-align: center; border-radius: 5px; margin: 20px 0; }
+        .image-placeholder p { margin: 0; font-style: italic; color: #555; }
+        .component-grid { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; text-align: center; margin: 30px 0; }
+        .component { flex-basis: 22%; min-width: 150px; }
+        .step { background-color: #dbeaff; border-left: 5px solid #0056b3; padding: 1px 20px; margin: 20px 0; border-radius: 5px; }
 
-        .font-heading {
-            font-family: 'Dancing Script', cursive;
-        }
-
-        .hero-bg {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/A8.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .gallery-item {
-            cursor: pointer;
-        }
-
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .text-glow {
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 105, 180, 0.4);
-        }
-
-        .text-gradient {
-            background: linear-gradient(45deg, #FDBA74, #F472B6, #FDBA74);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-            background-size: 200% 200%;
-            animation: gradient-animation 4s ease infinite;
-        }
-
-        @keyframes gradient-animation {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
-        }
+        /* Tab Styles */
+        .tab-buttons { overflow: hidden; border-bottom: 1px solid #ccc; background-color: #f1f1f1; border-radius: 8px 8px 0 0; }
+        .tab-buttons button { background-color: inherit; float: left; border: none; outline: none; cursor: pointer; padding: 14px 16px; transition: 0.3s; font-size: 17px; }
+        .tab-buttons button:hover { background-color: #ddd; }
+        .tab-buttons button.active { background-color: #007bff; color: white; }
+        .tab-content { display: none; padding: 20px; border-top: none; }
     </style>
 </head>
+<body>
+    <div class="container">
+        <h1>Guide: Create Big Data Cluster Using Docker 📊</h1>
 
-<body class="text-gray-700">
-    <!-- Language Switch Button -->
-    <div class="fixed top-4 right-4 z-[9999]">
-        <button id="lang-switch"
-            class="flex items-center bg-rose-500 text-white font-semibold py-2 px-4 rounded-full shadow-lg hover:bg-rose-600 transition-all">
-            <i data-feather="globe" class="w-4 h-4 mr-2"></i>
-            <span id="lang-text">Tiếng Việt</span>
-        </button>
+        <div class="tab-buttons">
+            <!-- <button class="tab-button" onclick="openTab(event, 'Architecture')">🏛️ Architecture</button> -->
+            <button class="tab-button" onclick="openTab(event, 'Setup')">🛠️ Setup Guide</button>
+            <button class="tab-button" onclick="openTab(event, 'FirstJob')">📝 First Job (Word Count)</button>
+        </div>
+
+        <!-- <div id="Architecture" class="tab-content">
+            <h2>The Big Picture: Our Architecture</h2>
+            <div class="image-placeholder">
+                <p><strong>[Diagram of the single-host Docker architecture]</strong><br>This diagram should show one large box for "Your Laptop". Inside, a box for "Docker". Inside Docker, show four smaller boxes for the containers: Spark Master, Spark Worker, Namenode, Datanode. Use arrows to show the Spark Worker connecting to the Master and the Datanode to the Namenode. Add arrows pointing from ports 8080 and 9870 out of the laptop to a "Web Browser" icon.</p>
+            </div>
+
+            <h2>The Components: Our Team</h2>
+            <div class="component-grid">
+                <div class="component">
+                    <div class="image-placeholder" style="padding: 10px;"><p>[Icon of a manager or brain]</p></div>
+                    <h4>Spark Master</h4>
+                    <p>The "Project Manager" for computations.</p>
+                </div>
+                <div class="component">
+                    <div class="image-placeholder" style="padding: 10px;"><p>[Icon of a worker bee or gear]</p></div>
+                    <h4>Spark Worker</h4>
+                    <p>The "Laborer" that does the actual work.</p>
+                </div>
+                <div class="component">
+                    <div class="image-placeholder" style="padding: 10px;"><p>[Icon of a library index or map]</p></div>
+                    <h4>HDFS Namenode</h4>
+                    <p>The "Librarian" that knows where data is.</p>
+                </div>
+                <div class="component">
+                    <div class="image-placeholder" style="padding: 10px;"><p>[Icon of a bookshelf or data storage]</p></div>
+                    <h4>HDFS Datanode</h4>
+                    <p>The "Bookshelves" that store the actual data.</p>
+                </div>
+            </div>
+        </div> -->
+
+        <div id="Setup" class="tab-content">
+            <h2>The Setup: 3 Simple Steps</h2>
+            <div class="step">
+                <h3>Step 1: Create the Blueprint</h3>
+                <p>Create a folder, and inside it, a file named <code>docker-compose.yml</code>. Paste this code:</p>
+                <pre><code>version: '3.8'
+
+services:
+  spark-master:
+    image: bde2020/spark-master:3.3.0-hadoop3.3
+    container_name: spark-master
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    environment:
+      - INIT_DAEMON_STEP=setup_spark
+    networks:
+      - bigdata_network
+
+  spark-worker:
+    image: bde2020/spark-worker:3.3.0-hadoop3.3
+    container_name: spark-worker
+    depends_on:
+      - spark-master
+    ports:
+      - "8081:8081"
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
+    networks:
+      - bigdata_network
+
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: namenode
+    ports:
+      - "9870:9870"
+    volumes:
+      - hadoop_namenode:/hadoop/dfs/name
+    environment:
+      - CLUSTER_NAME=test
+      - "CORE_CONF_fs_defaultFS=hdfs://namenode:8020"
+    networks:
+      - bigdata_network
+
+  datanode:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode
+    depends_on:
+      - namenode
+    volumes:
+      - hadoop_datanode:/hadoop/dfs/data
+    environment:
+      - SERVICE_PRECONDITION=namenode:9870
+      - "CORE_CONF_fs_defaultFS=hdfs://namenode:8020"
+    networks:
+      - bigdata_network
+
+networks:
+  bigdata_network:
+    driver: bridge
+
+volumes:
+  hadoop_namenode:
+  hadoop_datanode:
+</code></pre>
+            </div>
+            <div class="step">
+                <h3>Step 2: Launch the Cluster 🚀</h3>
+                <p>In your terminal, from the same folder, run:</p>
+                <pre><code>docker-compose up -d</code></pre>
+            </div>
+            <div class="step">
+                <h3>Step 3: Verify Everything is Working ✅</h3>
+                <p>Check the web dashboards. This is your proof!</p>
+                <p><strong>1. Spark UI: <a href="http://localhost:8080" target="_blank">http://localhost:8080</a></strong></p>
+                <img src="images/spark_ui.png" alt="Spark UI" style="width:100%; max-width:600px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px;">
+                <p><strong>2. HDFS UI: <a href="http://localhost:9870" target="_blank">http://localhost:9870</a></strong> (Go to the "Datanodes" tab)</p>
+                <img src="images/hdfs_ui.png" alt="HDFS UI" style="width:100%; max-width:600px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px;">
+            </div>
+        </div>
+
+        <div id="FirstJob" class="tab-content">
+            <h2>Running Your First Job: Word Count</h2>
+            <div class="step">
+                <h3>Step 1: Enter the Spark Master Container</h3>
+                <p>Open a terminal and type:</p>
+                <pre><code>docker exec -it namenode bash</code></pre>
+            </div>
+            <div class="step">
+                <h3>Step 2: Create Data and Add it to HDFS</h3>
+                <p>Create a simple text file inside the container:</p>
+                <pre><code>echo "hello spark hello hadoop spark is great" > test.txt</code></pre>
+                <p>Copy the file into HDFS:</p>
+                <pre><code>hdfs dfs -mkdir -p /input
+hdfs dfs -put test.txt /input</code></pre>
+            </div>
+            <div class="step">
+                <h3>Step 3: Run the PySpark Code</h3>
+                <p>Connect to the Spark Master:</p>
+                <pre><code>docker exec -it spark-master bash</code></pre>
+                <p>Start the interactive PySpark shell:</p>
+                <pre><code>/spark/bin/pyspark</code></pre>
+                <p>Enter the following Python code one line at a time:</p>
+                <pre><code>text_file = sc.textFile("hdfs://namenode:8020/input/test.txt")
+counts = text_file.flatMap(lambda line: line.split(" ")) \
+                 .map(lambda word: (word, 1)) \
+                 .reduceByKey(lambda a, b: a + b)
+output = counts.collect()
+for (word, count) in output:
+    print(f"{word}: {count}")
+exit()</code></pre>
+            </div>
+            <div class="step">
+                <h3>Step 4: Check Your Result!</h3>
+                <p>You should see the final counts printed to your screen:</p>
+                <pre><code>hello: 2
+great: 1
+spark: 2
+hadoop: 1
+is: 1</code></pre>
+        </div>
     </div>
 
-    <!-- Hidden iframe for form submission -->
-    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"
-        onload="if(this.contentWindow.location.href != 'about:blank'){console.log('Form submitted.')}"></iframe>
-
-    <!-- Header / Hero Section -->
-    <header id="home" class="hero-bg h-screen flex flex-col items-center justify-center text-white text-center p-4">
-        <h2 class="font-heading text-6xl md:text-7xl mb-2 text-white text-glow"
-            data-lang-en="Nguyễn Thượng Hiền High School" data-lang-vi="Trường THPT Nguyễn Thượng Hiền">Nguyễn Thượng
-            Hiền High School</h2>
-        <h1 class="text-5xl md:text-7xl font-bold tracking-wider uppercase mb-4 text-gradient text-glow"
-            data-lang-en="A8 2011 Reunion" data-lang-vi="Họp Lớp A8 2011">A8 2011 Reunion</h1>
-        <p class="text-lg md:text-2xl mb-8" data-lang-en="Fourteen years have flown by! Let's reconnect and reminisce."
-            data-lang-vi="Mười bốn năm đã trôi qua! Hãy cùng kết nối và ôn lại kỷ niệm.">Fourteen years have flown by!
-            Let's reconnect and reminisce.</p>
-
-        <div id="countdown" class="flex space-x-4 md:space-x-8 text-center">
-            <div>
-                <div id="days" class="text-4xl md:text-6xl font-bold">00</div>
-                <div class="text-sm uppercase" data-lang-en="Days" data-lang-vi="Ngày">Days</div>
-            </div>
-            <div>
-                <div id="hours" class="text-4xl md:text-6xl font-bold">00</div>
-                <div class="text-sm uppercase" data-lang-en="Hours" data-lang-vi="Giờ">Hours</div>
-            </div>
-            <div>
-                <div id="minutes" class="text-4xl md:text-6xl font-bold">00</div>
-                <div class="text-sm uppercase" data-lang-en="Minutes" data-lang-vi="Phút">Minutes</div>
-            </div>
-            <div>
-                <div id="seconds" class="text-4xl md:text-6xl font-bold">00</div>
-                <div class="text-sm uppercase" data-lang-en="Seconds" data-lang-vi="Giây">Seconds</div>
-            </div>
-        </div>
-        <a href="#rsvp"
-            class="mt-12 bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105"
-            data-lang-en="RSVP Now" data-lang-vi="Đăng Ký Ngay">
-            RSVP Now
-        </a>
-    </header>
-
-    <!-- Main Content -->
-    <main>
-        <!-- Event Details Section -->
-        <section id="details" class="py-20 bg-white fade-in-section">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="font-heading text-5xl text-rose-500 mb-4" data-lang-en="The Main Event"
-                    data-lang-vi="Sự Kiện Chính">The Main Event</h2>
-                <p class="max-w-2xl mx-auto mb-12"
-                    data-lang-en="Join us for an unforgettable evening of dinner, having fun, and catching up."
-                    data-lang-vi="Hãy tham gia cùng chúng tôi trong một buổi tối khó quên với ăn uống, vui chơi và trò chuyện.">
-                    Join us for an unforgettable evening of dinner, having fun, and catching up.</p>
-                <div class="flex flex-wrap justify-center gap-8 md:gap-16">
-                    <div class="flex flex-col items-center space-y-3"><i data-feather="calendar"
-                            class="w-12 h-12 text-rose-500"></i>
-                        <h3 class="text-xl font-bold" data-lang-en="Date & Time" data-lang-vi="Ngày & Giờ">Date & Time
-                        </h3>
-                        <p data-lang-en="Saturday, August 16, 2025" data-lang-vi="Thứ Bảy, ngày 16 tháng 8, 2025">
-                            Saturday, August 16, 2025</p>
-                        <p data-lang-en="5:00 PM - 10:00 PM" data-lang-vi="17:00 - 22:00">5:00 PM - 10:00 PM</p>
-                    </div>
-                    <div class="flex flex-col items-center space-y-3"><i data-feather="map-pin"
-                            class="w-12 h-12 text-rose-500"></i>
-                        <h3 class="text-xl font-bold" data-lang-en="Venue" data-lang-vi="Địa Điểm">Venue</h3>
-                        <p data-lang-en="Dìn Ký Restaurant" data-lang-vi="Nhà hàng Dìn Ký">Dìn Ký Restaurant</p>
-                        <p>142/18 Cộng Hòa, Phường 4, Tân Bình</p>
-                    </div>
-                    <div class="flex flex-col items-center space-y-3"><i data-feather="user"
-                            class="w-12 h-12 text-rose-500"></i>
-                        <h3 class="text-xl font-bold" data-lang-en="Dress Code" data-lang-vi="Trang Phục">Dress Code
-                        </h3>
-                        <p data-lang-en="Free Dress" data-lang-vi="Trang phục tự do">Free Dress</p>
-                        <p data-lang-en="Look sharp, feel great!" data-lang-vi="Lịch sự và thoải mái nhé!">Look sharp,
-                            feel great!</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Memory Lane Section -->
-        <section id="story" class="py-20 fade-in-section">
-            <div class="container mx-auto px-6 flex flex-wrap items-center">
-                <div class="w-full md:w-1/2 p-4"><img src="images/poster.jpg" alt="Nostalgic photo"
-                        class="rounded-lg shadow-2xl w-full"></div>
-                <div class="w-full md:w-1/2 p-4 md:pl-12">
-                    <h2 class="font-heading text-5xl text-rose-500 mb-4" data-lang-en="A Walk Down Memory Lane"
-                        data-lang-vi="Dạo Bước Trên Con Đường Kỷ Niệm">A Walk Down Memory Lane</h2>
-                    <p class="mb-4"
-                        data-lang-en="Remember the Friday night lights, the cram sessions in the library, the roar of the crowd at pep rallies? We made memories that lasted a lifetime at Nguyễn Thượng Hiền. From awkward freshman photos to the pride of graduation day, we shared a special time together."
-                        data-lang-vi="Bạn còn nhớ những buổi học ôn thi trong thư viện, những tiếng reo hò cổ vũ náo nhiệt? Chúng ta đã tạo nên những kỷ niệm khó phai tại trường Nguyễn Thượng Hiền. Từ những tấm ảnh ngây ngô năm nhất cho đến niềm tự hào trong ngày tốt nghiệp, chúng ta đã cùng nhau chia sẻ một khoảng thời gian thật đặc biệt.">
-                        Remember the Friday night lights, the cram sessions in the library, the roar of the crowd at pep
-                        rallies? We made memories that lasted a lifetime at Nguyễn Thượng Hiền. From awkward freshman
-                        photos to the pride of graduation day, we shared a special time together.</p>
-                    <p data-lang-en="This reunion is more than just a party; it's a chance to relive those moments, laugh about the old times, and see the amazing people we've all become. Let's make some new memories together!"
-                        data-lang-vi="Buổi họp lớp này không chỉ là một bữa tiệc; đó là cơ hội để sống lại những khoảnh khắc ấy, cùng cười về những chuyện ngày xưa, và xem tất cả chúng ta đã trở thành những con người tuyệt vời như thế nào. Hãy cùng nhau tạo thêm những kỷ niệm mới nhé!">
-                        This reunion is more than just a party; it's a chance to relive those moments, laugh about the
-                        old times, and see the amazing people we've all become. Let's make some new memories together!
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Photo Gallery Section -->
-        <section id="gallery" class="py-20 bg-white fade-in-section">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="font-heading text-5xl text-rose-500 mb-4" data-lang-en="From the Yearbook"
-                    data-lang-vi="Từ Kỷ Yếu">From the Yearbook</h2>
-                <p class="max-w-2xl mx-auto mb-12"
-                    data-lang-en="Click on a photo to see more! Got your own? Bring them along!"
-                    data-lang-vi="Nhấp vào ảnh để xem thêm! Nếu bạn có ảnh, hãy mang theo nhé!">Click on a photo to see
-                    more! Got your own? Bring them along!</p>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    <div class="gallery-item group relative rounded-lg shadow-lg"
-                        data-images="images/1.jpg,images/2.jpg,images/3.jpg"><img src="images/1.jpg"
-                            alt="Gallery image 1"
-                            class="gallery-image w-full h-full object-cover cursor-pointer transition-transform duration-1000 ease-in-out group-hover:absolute group-hover:z-50 group-hover:top-0 group-hover:left-3/10 group-hover:object-contain group-hover:scale-[1.5]">
-                    </div>
-                    <div class="gallery-item group relative rounded-lg shadow-lg"
-                        data-images="images/4.jpg,images/5.jpg,images/6.jpg"><img src="images/4.jpg"
-                            alt="Gallery image 2"
-                            class="gallery-image w-full h-full object-cover cursor-pointer transition-transform duration-1000 ease-in-out group-hover:absolute group-hover:z-50 group-hover:top-0 group-hover:left-0 group-hover:object-contain group-hover:scale-[1.5]">
-                    </div>
-                    <div class="gallery-item group relative rounded-lg shadow-lg" data-images="images/7.jpg"><img
-                            src="images/7.jpg" alt="Gallery image 3"
-                            class="gallery-image w-full h-full object-cover cursor-pointer transition-transform duration-1000 ease-in-out group-hover:absolute group-hover:z-50 group-hover:top-0 group-hover:right-3/10 group-hover:object-contain group-hover:scale-[1.5]">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- RSVP Section -->
-        <section id="rsvp" class="py-20 fade-in-section">
-            <div class="container mx-auto px-6 text-center">
-                <div id="rsvp-container">
-                    <h2 class="font-heading text-5xl text-rose-500 mb-4" data-lang-en="Are You Coming?"
-                        data-lang-vi="Bạn Sẽ Tham Gia Chứ?">Are You Coming?</h2>
-                    <div class="max-w-2xl mx-auto mb-12"></div>
-                    <p class="text-lg"
-                        data-lang-en="Please let us know if you can make it by <strong class='text-rose-600'>August 10, 2025</strong>. We can't wait to see you!"
-                        data-lang-vi="Nhớ cho tui biết bạn có thể tham dự trước ngày <strong class='text-rose-600'>10 tháng 8, 2025</strong>. Rất mong được gặp bạn!">
-                        Please let us know if you can make it by <strong class="text-rose-600">August 10, 2025</strong>.
-                        We can't wait to see you!
-                    </p>
-                    <p class="text-sm italic mt-2"
-                        data-lang-en="Contribution: <strong class='font-semibold'>500,000 VND/person</strong> to cover venue and dinner costs (free for children)."
-                        data-lang-vi="Chi phí tham dự: <strong class='font-semibold'>500.000 VNĐ/người</strong> để chi trả cho địa điểm và bữa tối (trẻ em miễn phí nhe).">
-                        Contribution: <strong class="font-semibold">500,000 VND/person</strong> to cover venue and
-                        dinner costs (free for children).
-                    </p>
-                </div>
-
-                <form id="rsvpForm" class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-xl"
-                    action="https://script.google.com/macros/s/AKfycbyz0dxDcAgx59Kc_oYQmIf58VfXfwJZSZqp9vlYv_tEpMpA3XikELMmBRGqZqj0LcvvxA/exec"
-                    method="post" target="hidden_iframe">
-                    <div class="mb-6"><label for="name" class="block text-left text-gray-700 text-sm font-bold mb-2"
-                            data-lang-en="Full Name" data-lang-vi="Họ và Tên">Full Name</label><input type="text"
-                            id="name" name="name"
-                            class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400"
-                            required></div>
-                    <div class="mb-6"><label for="email" class="block text-left text-gray-700 text-sm font-bold mb-2"
-                            data-lang-en="Email Address" data-lang-vi="Địa chỉ Email">Email Address</label><input
-                            type="email" id="email" name="email"
-                            class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400"
-                            required></div>
-                    <div class="mb-6"><label for="classNumber"
-                            class="block text-left text-gray-700 text-sm font-bold mb-2"
-                            data-lang-en="Your Number in Class (e.g., Student ID)"
-                            data-lang-vi="Số thứ tự trong lớp">Your Number in Class (e.g., Student ID)</label><input
-                            type="text" id="classNumber" name="classNumber"
-                            class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400"
-                            required></div>
-                    <div class="mb-8"><label for="guests" class="block text-left text-gray-700 text-sm font-bold mb-2"
-                            data-lang-en="Number of Adults Guests (including yourself - 500k/guest)"
-                            data-lang-vi="Số lượng người lớn (bao gồm cả bạn - 500k/khách)">Number of Adults Guests (including
-                            yourself - 500k/guest)</label><input type="number" id="guests" name="guests"
-                            class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-rose-400"
-                            min="1" value="1" required></div>
-                    <button type="submit"
-                        class="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105"
-                        data-lang-en="Get My QR Code" data-lang-vi="Lấy Mã QR Của Tôi">Get My QR Code</button>
-                </form>
-            </div>
-
-            <div id="qrResult" class="hidden max-w-xl mx-auto bg-white p-8 rounded-lg shadow-xl">
-                <h3 class="text-2xl font-bold text-green-600 mb-4" data-lang-en="Thank You! Your RSVP is Confirmed."
-                    data-lang-vi="Cảm ơn bạn! Đã xác nhận đăng ký.">Thank You! Your RSVP is Confirmed.</h3>
-                <p class="mb-6"
-                    data-lang-en="Please save this QR code. You'll need it to check in and for the lucky draw at the event!"
-                    data-lang-vi="Vui lòng lưu lại mã QR này. Bạn sẽ cần nó để check-in và tham gia rút thăm may mắn tại sự kiện!">
-                    Please save this QR code. You'll need it to check in and for the lucky draw at the event!</p>
-                <div id="qrCodeContainer" class="flex justify-center mb-4"><canvas id="qrCanvas"></canvas></div>
-                <p class="text-sm text-gray-600"
-                    data-lang-en="You can take a screenshot or right-click to save the image."
-                    data-lang-vi="Bạn có thể chụp màn hình hoặc nhấp chuột phải để lưu ảnh.">You can take a
-                    screenshot or right-click to save the image.</p>
-            </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="bg-gray-800 text-white py-12 text-center">
-        <div class="container mx-auto px-6">
-            <p class="font-heading text-4xl mb-2" data-lang-en="See You Soon!" data-lang-vi="Hẹn Gặp Lại!">See You Soon!
-            </p>
-            <p data-lang-en="&copy; 2025 A8 Reunion Committee. All Rights Reserved."
-                data-lang-vi="&copy; 2025 Ban Tổ Chức Họp Lớp A8. Mọi quyền được bảo lưu.">&copy; 2025 A8 Reunion
-                Committee. All Rights Reserved.</p>
-        </div>
-    </footer>
-
     <script>
-        feather.replace();
+        function openTab(evt, tabName) {
+            // Declare all variables
+            var i, tabcontent, tabbuttons;
 
-        // --- Countdown Timer Logic ---
-        const countDownDate = new Date("Aug 16, 2025 17:00:00").getTime();
-        const x = setInterval(function () {
-            const now = new Date().getTime();
-            const distance = countDownDate - now;
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            document.getElementById("days").innerText = days.toString().padStart(2, '0');
-            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
-            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
-            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
-            if (distance < 0) {
-                clearInterval(x);
-                document.getElementById("countdown").innerHTML = "<div class='text-3xl font-bold' data-lang-en='The Reunion is Here!' data-lang-vi='Sự Kiện Đang Diễn Ra!'>The Reunion is Here!</div>";
+            // Get all elements with class="tab-content" and hide them
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
             }
-        }, 1000);
 
-        // --- RSVP Form & QR Code Handling ---
-        const rsvpForm = document.getElementById('rsvpForm');
-        const rsvpContainer = document.getElementById('rsvp-container');
-        const qrResultContainer = document.getElementById('qrResult');
-        const submitButton = rsvpForm.querySelector('button[type="submit"]');
-        rsvpForm.addEventListener('submit', function (e) {
-            const currentSubmitText = submitButton.innerText;
-            submitButton.disabled = true;
-            submitButton.innerText = currentLanguage === 'en' ? 'Submitting...' : 'Đang gửi...';
+            // Get all elements with class="tab-button" and remove the class "active"
+            tabbuttons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
+            }
 
-            setTimeout(() => {
-                const name = document.getElementById('name').value;
-                const email = document.getElementById('email').value;
-                const classNumber = document.getElementById('classNumber').value;
-                const qrData = { name: name, email: email, classNumber: classNumber };
-                const qrDataString = JSON.stringify(qrData);
-                const qrCanvas = document.getElementById('qrCanvas');
-                QRCode.toCanvas(qrCanvas, qrDataString, { width: 256 }, function (error) {
-                    if (error) console.error(error);
-                    rsvpContainer.classList.add('hidden');
-                    qrResultContainer.classList.remove('hidden');
-                });
-            }, 1500);
-        });
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
 
-        // --- Interactive Photo Gallery ---
-        const galleryItems = document.querySelectorAll('.gallery-item');
-        galleryItems.forEach(item => {
-            const images = item.dataset.images.split(',');
-            let currentIndex = 0;
-            item.addEventListener('click', () => {
-                currentIndex = (currentIndex + 1) % images.length;
-                const imgElement = item.querySelector('.gallery-image');
-                imgElement.src = images[currentIndex];
-            });
-        });
-
-        // --- Scroll Animation Logic ---
-        const sections = document.querySelectorAll('.fade-in-section');
-        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                } else {
-                    entry.target.classList.remove('is-visible');
-                }
-            });
-        }, observerOptions);
-        sections.forEach(section => { observer.observe(section); });
-
-        // --- Language Switcher Logic ---
-        const langSwitchButton = document.getElementById('lang-switch');
-        const translatableElements = document.querySelectorAll('[data-lang-en]');
-        let currentLanguage = 'en'; // Default language is English
-
-        langSwitchButton.addEventListener('click', () => {
-            // Toggle language
-            currentLanguage = currentLanguage === 'en' ? 'vi' : 'en';
-
-            // Update button text
-            document.getElementById('lang-text').textContent = currentLanguage === 'en' ? 'Tiếng Việt' : 'English';
-
-            // Update all elements
-            translatableElements.forEach(el => {
-                const text = currentLanguage === 'en' ? el.dataset.langEn : el.dataset.langVi;
-                if (text) {
-                    el.innerHTML = text; // Change innerText to innerHTML
-                }
-            });
-        });
-
+        // Get the element with id="defaultOpen" and click on it to open the first tab by default
+        document.querySelector('.tab-button').click();
     </script>
-
 </body>
-
 </html>
