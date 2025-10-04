@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guide: Create Big Data Cluster Using Docker</title>
+    <title>Guide: Create Big Data Cluster Using Docker</title> 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Source+Sans+Pro:wght@400;600&family=Fira+Code&display=swap" rel="stylesheet">
@@ -35,14 +35,14 @@
             color: var(--text-color);
             background-color: var(--background-color);
             -webkit-font-smoothing: antialiased;
+            position: relative;
         }
 
         .container {
-            /* -- FIX: Make container full-width -- */
             width: 100%;
             min-height: 100vh;
             margin: 0;
-            padding: 2rem 5%; /* Use percentage padding for responsiveness */
+            padding: 2rem 5%;
             background: var(--surface-color);
             border-radius: 0;
             box-shadow: none;
@@ -63,6 +63,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 2rem;
+            padding-top: 3rem; /* Add padding to avoid overlap with language switcher */
         }
 
         h2 {
@@ -76,9 +77,9 @@
             font-size: 1.4rem;
             color: var(--primary-hover);
         }
-        /* -- FIX: Add max-width to paragraphs for readability on wide screens -- */
+
         p {
-            max-width: 200ch; /* 'ch' unit is roughly the width of the '0' character */
+            max-width: 200ch; /* Adjusted for better readability */
         }
 
         a {
@@ -112,7 +113,6 @@
             color: var(--secondary-color);
             position: relative;
             transition: color 0.3s ease;
-            /* -- FIX: Make buttons fill the width -- */
             flex-grow: 1; 
             text-align: center;
         }
@@ -196,30 +196,6 @@
         code { font-family: inherit; }
 
         /* --- 5. Custom Components --- */
-        .component-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1.5rem;
-            text-align: center;
-            margin: 2rem 0;
-        }
-
-        .component-card {
-            background: var(--surface-color);
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border: 1px solid var(--border-color);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .component-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
-        }
-        .component-card h4 { margin: 0.5rem 0; font-size: 1.1rem; }
-        .component-card p { margin: 0; font-size: 0.9rem; color: var(--secondary-color); }
-        .component-icon { font-size: 2.5rem; }
-
         .step {
             background-color: #e9ecef4d;
             border-left: 5px solid var(--primary-color);
@@ -228,7 +204,7 @@
             border-radius: 0 var(--border-radius) var(--border-radius) 0;
             position: relative;
         }
-        /* Step Counter */
+
         body { counter-reset: step-counter; }
         .step h3::before {
             counter-increment: step-counter;
@@ -255,71 +231,82 @@
             margin: 1rem 0;
         }
 
-        /* --- 6. Responsive Design --- */
+        /* --- 6. NEW: Language Switcher --- */
+        .language-switcher {
+            position: absolute;
+            top: 20px;
+            right: 5%;
+            display: flex;
+            gap: 5px;
+            background: #fff;
+            padding: 5px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .lang-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--border-color);
+            background-color: transparent;
+            color: var(--secondary-color);
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.2s ease-in-out;
+        }
+        .lang-btn:hover {
+            background-color: #f1f1f1;
+            color: var(--text-color);
+        }
+        .lang-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* --- 7. Responsive Design --- */
         @media (max-width: 768px) {
             .container {
-                margin: 1rem;
+                margin: 0;
                 padding: 1.5rem;
             }
             h1 { font-size: 2rem; }
             .tab-buttons { flex-wrap: wrap; }
             .tab-button { padding: 0.8rem 1rem; font-size: 1rem; }
+            .language-switcher {
+                top: 10px;
+                right: 15px;
+            }
         }
     </style>
 </head>
 <body>
 
+    <div class="language-switcher">
+        <button onclick="changeLanguage('en')" class="lang-btn" data-lang="en">EN</button>
+        <button onclick="changeLanguage('vi')" class="lang-btn" data-lang="vi">VI</button>
+    </div>
+
     <main class="container">
-        <h1>Guide: Create Big Data Cluster Using Docker</h1>
+        <h1 data-translate-key="main_title">Guide: Create Big Data Cluster Using Docker</h1>
 
         <div class="tab-buttons">
-            <!-- <button class="tab-button" onclick="openTab(event, 'Architecture')">🏛️ Architecture</button> -->
-            <button class="tab-button" onclick="openTab(event, 'Setup')">🛠️ Setup Guide</button>
-            <button class="tab-button" onclick="openTab(event, 'FirstJob')">📝 First Job</button>
+            <button class="tab-button" onclick="openTab(event, 'Setup')" data-translate-key="tab_setup">🛠️ Setup Guide</button>
+            <button class="tab-button" onclick="openTab(event, 'FirstJob')" data-translate-key="tab_first_job">📝 First Job</button>
         </div>
 
-        <!-- <div id="Architecture" class="tab-content">
-            <h2>The Big Picture: Our Architecture</h2>
-            
-            <p>This architecture runs entirely on your machine inside Docker. It consists of four containers that form a mini big data ecosystem: a Spark cluster for processing and an HDFS cluster for storage.</p>
-
-            <h2>The Components: Our Team</h2>
-            <div class="component-grid">
-                <div class="component-card">
-                    <div class="component-icon">🧠</div>
-                    <h4>Spark Master</h4>
-                    <p>The "Project Manager" for computations.</p>
-                </div>
-                <div class="component-card">
-                    <div class="component-icon">💪</div>
-                    <h4>Spark Worker</h4>
-                    <p>The "Laborer" that does the actual work.</p>
-                </div>
-                <div class="component-card">
-                    <div class="component-icon">🗺️</div>
-                    <h4>HDFS Namenode</h4>
-                    <p>The "Librarian" that knows where data is.</p>
-                </div>
-                <div class="component-card">
-                    <div class="component-icon">📚</div>
-                    <h4>HDFS Datanode</h4>
-                    <p>The "Bookshelves" that store the actual data.</p>
-                </div>
-            </div>
-        </div> -->
-
         <div id="Setup" class="tab-content">
-            <h2>The Setup: 3 Simple Steps</h2>
+            <h2 data-translate-key="setup_title">The Setup: 3 Simple Steps</h2>
             <div class="step">
-                <h3>Create the Blueprint</h3>
-                <p>Create a folder for your project, and inside it, a file named <code>docker-compose.yml</code>. Paste this code:</p>
+                <h3 data-translate-key="step1_heading">Create the Blueprint</h3>
+                <p data-translate-key="step1_p1">Create a folder for your project, and inside it, a file named <code>docker-compose.yml</code>. Paste this code:</p>
                 <div class="code-block-wrapper">
                     <div class="code-block-header">
                         <span>docker-compose.yml</span>
-                        <button class="copy-button">Copy</button>
+                        <button class="copy-button" data-translate-key="copy_button">Copy</button>
                     </div>
                     <pre><code>version: '3.8'
-
+# ... (docker-compose content is unchanged)
 services:
   spark-master:
     image: bde2020/spark-master:3.3.0-hadoop3.3
@@ -375,48 +362,48 @@ volumes:
                 </div>
             </div>
             <div class="step">
-                <h3>Launch the Cluster</h3>
-                <p>In your terminal, from the same folder, run this command:</p>
+                <h3 data-translate-key="step2_heading">Launch the Cluster</h3>
+                <p data-translate-key="step2_p1">In your terminal, from the same folder, run this command:</p>
                 <div class="code-block-wrapper">
                     <div class="code-block-header">
                         <span>bash</span>
-                        <button class="copy-button">Copy</button>
+                        <button class="copy-button" data-translate-key="copy_button">Copy</button>
                     </div>
                     <pre><code>docker-compose up -d</code></pre>
                 </div>
             </div>
             <div class="step">
-                <h3>Verify Everything is Working</h3>
-                <p>Check the web dashboards.</p>
+                <h3 data-translate-key="step3_heading">Verify Everything is Working</h3>
+                <p data-translate-key="step3_p1">Check the web dashboards.</p>
                 <p><strong>1. Spark UI: <a href="http://localhost:8080" target="_blank">http://localhost:8080</a></strong></p>
                 <img src="images/spark_ui.png" alt="Spark UI" style="width:100%; max-width:600px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px;">
-                <p><strong>2. HDFS UI: <a href="http://localhost:9870" target="_blank">http://localhost:9870</a></strong> (Go to the "Datanodes" tab to verify)</p>
+                <p><strong data-translate-key="step3_p2_strong">2. HDFS UI: <a href="http://localhost:9870" target="_blank">http://localhost:9870</a></strong> <span data-translate-key="step3_p2_span">(Go to the "Datanodes" tab to verify)</span></p>
                 <img src="images/hdfs_ui.png" alt="HDFS UI" style="width:100%; max-width:600px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px;">
             </div>
         </div>
 
         <div id="FirstJob" class="tab-content">
-            <h2>Running Your First Job: Word Count</h2>
-            <p>Data flows from your command line into HDFS, gets processed by Spark, and the result is printed back to your screen.</p>
+            <h2 data-translate-key="job_title">Running Your First Job: Word Count</h2>
+            <p data-translate-key="job_p1">Data flows from input on HDFS, gets processed by Spark, and the result is printed back to your screen.</p>
             
             <div class="step">
-                <h3>Enter the Namenode Container</h3>
-                <p>We'll use the Namenode to put data into our distributed file system. Open a terminal and type:</p>
+                <h3 data-translate-key="job_step1_heading">Enter the Namenode Container</h3>
+                <p data-translate-key="job_step1_p1">We'll use the Namenode to put data into our distributed file system. Open a terminal and type:</p>
                 <div class="code-block-wrapper">
                     <div class="code-block-header">
                         <span>bash</span>
-                        <button class="copy-button">Copy</button>
+                        <button class="copy-button" data-translate-key="copy_button">Copy</button>
                     </div>
                     <pre><code>docker exec -it namenode bash</code></pre>
                 </div>
             </div>
             <div class="step">
-                <h3>Add Data to HDFS</h3>
-                <p>First, create a simple text file inside the container, then copy it into HDFS:</p>
+                <h3 data-translate-key="job_step2_heading">Add Data to HDFS</h3>
+                <p data-translate-key="job_step2_p1">First, create a simple text file inside the container, then copy it into HDFS:</p>
                 <div class="code-block-wrapper">
                     <div class="code-block-header">
                         <span>bash</span>
-                        <button class="copy-button">Copy</button>
+                        <button class="copy-button" data-translate-key="copy_button">Copy</button>
                     </div>
                     <pre><code># Create a local file inside the container
 echo "hello spark hello hadoop spark is great" > test.txt
@@ -427,20 +414,20 @@ hdfs dfs -put test.txt /input</code></pre>
                 </div>
             </div>
             <div class="step">
-                <h3>Run the PySpark Code</h3>
-                <p>Open <strong>another terminal</strong> and connect to the Spark Master container to run the job:</p>
+                <h3 data-translate-key="job_step3_heading">Run the PySpark Code</h3>
+                <p data-translate-key="job_step3_p1">Open <strong>another terminal</strong> and connect to the Spark Master container to run the job:</p>
                 <div class="code-block-wrapper">
                     <div class="code-block-header">
                         <span>bash</span>
-                        <button class="copy-button">Copy</button>
+                        <button class="copy-button" data-translate-key="copy_button">Copy</button>
                     </div>
-                    <pre><code>docker exec -it spark-master /spark/bin/pyskpark</code></pre>
+                    <pre><code>docker exec -it spark-master /spark/bin/pyspark</code></pre>
                 </div>
-                <p>Once inside the PySpark shell, enter the following Python code line by line:</p>
+                <p data-translate-key="job_step3_p2">Once inside the PySpark shell, enter the following Python code line by line:</p>
                 <div class="code-block-wrapper">
                     <div class="code-block-header">
                         <span>python</span>
-                        <button class="copy-button">Copy</button>
+                        <button class="copy-button" data-translate-key="copy_button">Copy</button>
                     </div>
                     <pre><code>text_file = sc.textFile("hdfs://namenode:9000/input/test.txt")
 counts = text_file.flatMap(lambda line: line.split(" ")) \
@@ -454,12 +441,12 @@ exit()</code></pre>
                 </div>
             </div>
             <div class="step">
-                <h3>Check Your Result!</h3>
-                <p>You should see the final counts printed to your screen:</p>
+                <h3 data-translate-key="job_step4_heading">Check Your Result!</h3>
+                <p data-translate-key="job_step4_p1">You should see the final counts printed to your screen:</p>
                 <div class="code-block-wrapper">
                     <div class="code-block-header">
                         <span>output</span>
-                        <button class="copy-button">Copy</button>
+                        <button class="copy-button" data-translate-key="copy_button">Copy</button>
                     </div>
                     <pre><code>hello: 2
 great: 1
@@ -472,6 +459,140 @@ is: 1</code></pre>
     </main>
 
     <script>
+        // --- 1. TRANSLATION DATA ---
+        // All text content is stored here. Add new languages or keys as needed.
+        const translations = {
+            main_title: {
+                en: 'Guide: Create Big Data Cluster Using Docker',
+                vi: 'Hướng dẫn: Tạo Cụm Big Data với Docker'
+            },
+            tab_setup: {
+                en: '🛠️ Setup Guide',
+                vi: '🛠️ Hướng dẫn Cài đặt'
+            },
+            tab_first_job: {
+                en: '📝 First Job',
+                vi: '📝 Chạy Job Đầu tiên'
+            },
+            setup_title: {
+                en: 'The Setup: 3 Simple Steps',
+                vi: 'Cài đặt: 3 Bước Đơn giản'
+            },
+            step1_heading: {
+                en: 'Create the Blueprint',
+                vi: 'Tạo Bản thiết kế (Blueprint)'
+            },
+            step1_p1: {
+                en: 'Create a folder for your project, and inside it, a file named <code>docker-compose.yml</code>. Paste this code:',
+                vi: 'Tạo một thư mục cho dự án của bạn, và bên trong nó, tạo một tệp tin tên là <code>docker-compose.yml</code>. Dán đoạn mã này vào:'
+            },
+            step2_heading: {
+                en: 'Launch the Cluster',
+                vi: 'Khởi chạy Cụm (Cluster)'
+            },
+            step2_p1: {
+                en: 'In your terminal, from the same folder, run this command:',
+                vi: 'Trong terminal của bạn, từ cùng thư mục, chạy lệnh này:'
+            },
+            step3_heading: {
+                en: 'Verify Everything is Working',
+                vi: 'Kiểm tra Mọi thứ Hoạt động'
+            },
+            step3_p1: {
+                en: 'Check the web dashboards.',
+                vi: 'Kiểm tra các trang quản trị web.'
+            },
+            step3_p2_strong: {
+                en: '2. HDFS UI: <a href="http://localhost:9870" target="_blank">http://localhost:9870</a>',
+                vi: '2. Giao diện HDFS: <a href="http://localhost:9870" target="_blank">http://localhost:9870</a>'
+            },
+            step3_p2_span: {
+                en: '(Go to the "Datanodes" tab to verify)',
+                vi: '(Đi tới tab "Datanodes" để xác minh)'
+            },
+            job_title: {
+                en: 'Running Your First Job: Word Count',
+                vi: 'Chạy Job Đầu tiên: Đếm từ (Word Count)'
+            },
+            job_p1: {
+                en: 'Data flows from HDFS, gets processed by Spark, and the result is printed back to your screen.',
+                vi: 'Dữ liệu sẽ đi từ HDFS, được xử lý bởi Spark, và kết quả được in trở lại màn hình của bạn.'
+            },
+            job_step1_heading: {
+                en: 'Enter the Namenode Container',
+                vi: 'Truy cập vào Container Namenode'
+            },
+            job_step1_p1: {
+                en: 'We\'ll use the Namenode to put data into our distributed file system. Open a terminal and type:',
+                vi: 'Chúng ta sẽ dùng Namenode để đưa dữ liệu vào hệ thống tệp phân tán. Mở một terminal và gõ lệnh:'
+            },
+            job_step2_heading: {
+                en: 'Add Data to HDFS',
+                vi: 'Thêm Dữ liệu vào HDFS'
+            },
+            job_step2_p1: {
+                en: 'First, create a simple text file inside the container, then copy it into HDFS:',
+                vi: 'Đầu tiên, tạo một tệp văn bản đơn giản bên trong container, sau đó sao chép nó vào HDFS:'
+            },
+            job_step3_heading: {
+                en: 'Run the PySpark Code',
+                vi: 'Chạy mã PySpark'
+            },
+            job_step3_p1: {
+                en: 'Open <strong>another terminal</strong> and connect to the Spark Master container to run the job:',
+                vi: 'Mở một <strong>terminal khác</strong> và kết nối vào container Spark Master để chạy job:'
+            },
+            job_step3_p2: {
+                en: 'Once inside the PySpark shell, enter the following Python code line by line:',
+                vi: 'Khi đã vào trong PySpark shell, nhập đoạn mã Python sau đây, từng dòng một:'
+            },
+            job_step4_heading: {
+                en: 'Check Your Result!',
+                vi: 'Kiểm tra Kết quả của Bạn!'
+            },
+            job_step4_p1: {
+                en: 'You should see the final counts printed to your screen:',
+                vi: 'Bạn sẽ thấy kết quả đếm cuối cùng được in ra màn hình:'
+            },
+            copy_button: {
+                en: 'Copy',
+                vi: 'Sao chép'
+            },
+            copied_button: {
+                en: 'Copied!',
+                vi: 'Đã chép!'
+            }
+        };
+
+        // --- 2. LANGUAGE SWITCHING LOGIC ---
+        let currentLang = localStorage.getItem('preferredLanguage') || 'en';
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('preferredLanguage', lang);
+            
+            // Update all elements with a translation key
+            document.querySelectorAll('[data-translate-key]').forEach(el => {
+                const key = el.getAttribute('data-translate-key');
+                if (translations[key] && translations[key][lang]) {
+                    // Use innerHTML to render tags like <code> or <a>
+                    el.innerHTML = translations[key][lang];
+                }
+            });
+
+            // Update the page title
+            document.title = translations.main_title[lang];
+
+            // Update active state on language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // --- 3. EXISTING PAGE FUNCTIONALITY ---
         function openTab(evt, tabName) {
             let i, tabcontent, tabbuttons;
             
@@ -489,18 +610,16 @@ is: 1</code></pre>
             evt.currentTarget.classList.add("active");
         }
 
-        // --- Copy Button Functionality ---
         document.querySelectorAll('.copy-button').forEach(button => {
             button.addEventListener('click', () => {
-                // -- FIX: Get text directly from the <pre> tag to be more robust --
                 const pre = button.closest('.code-block-wrapper').querySelector('pre');
                 const text = pre.innerText;
 
                 navigator.clipboard.writeText(text).then(() => {
-                    button.innerText = 'Copied!';
+                    button.innerText = translations.copied_button[currentLang];
                     button.classList.add('copied');
                     setTimeout(() => {
-                        button.innerText = 'Copy';
+                        button.innerText = translations.copy_button[currentLang];
                         button.classList.remove('copied');
                     }, 2000);
                 }).catch(err => {
@@ -509,13 +628,18 @@ is: 1</code></pre>
             });
         });
 
-        // Open the first tab by default
-        // Use a try...catch block to prevent errors if element not found immediately
-        try {
-            document.querySelector('.tab-button').click();
-        } catch (e) {
-            console.error("Could not open default tab: ", e);
-        }
+        // --- 4. INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set the initial language
+            changeLanguage(currentLang);
+
+            // Open the first tab by default
+            try {
+                document.querySelector('.tab-button').click();
+            } catch (e) {
+                console.error("Could not open default tab: ", e);
+            }
+        });
     </script>
 </body>
 </html>
