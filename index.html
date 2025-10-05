@@ -78,7 +78,7 @@
             color: var(--primary-hover);
         }
 
-        p {
+        p, ul {
             max-width: 200ch; /* Adjusted for better readability */
         }
 
@@ -229,9 +229,12 @@
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             margin: 1rem 0;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        /* --- 6. NEW: Language Switcher --- */
+        /* --- 6. Language Switcher --- */
         .language-switcher {
             position: absolute;
             top: 20px;
@@ -291,8 +294,28 @@
         <h1 data-translate-key="main_title">Guide: Create Big Data Cluster Using Docker</h1>
 
         <div class="tab-buttons">
-            <button class="tab-button" onclick="openTab(event, 'Setup')" data-translate-key="tab_setup">🛠️ Setup Guide</button>
-            <button class="tab-button" onclick="openTab(event, 'FirstJob')" data-translate-key="tab_first_job">📝 First Job</button>
+            <button class="tab-button" onclick="openTab(event, 'Architecture')" data-translate-key="tab_architecture">Architecture</button>
+            <button class="tab-button" onclick="openTab(event, 'Setup')" data-translate-key="tab_setup">Setup Guide</button>
+            <button class="tab-button" onclick="openTab(event, 'FirstJob')" data-translate-key="tab_first_job">First Job</button>
+        </div>
+
+        <div id="Architecture" class="tab-content">
+            <h2 data-translate-key="arch_title">The Big Picture: Our Architecture</h2>
+            <p data-translate-key="arch_intro">This guide uses a simple, four-container setup to create a mini big data ecosystem on your local machine.</p>
+            
+            <img src="images/diagram.png" data-translate-alt="alt_arch_diagram" alt="Architecture Diagram" style="width:100%; max-width:1200px; border: 1px solid #ccc;">
+
+            <h3 data-translate-key="arch_hadoop_title">Hadoop (HDFS)</h3>
+            <ul>
+                <li data-translate-key="arch_hadoop_p1"><strong>Namenode:</strong> The "manager" that keeps track of all file locations. It knows which pieces of a file are on which Datanode.</li>
+                <li data-translate-key="arch_hadoop_p2"><strong>Datanode:</strong> The "storage unit" that physically stores blocks of data and serves them when requested.</li>
+            </ul>
+
+            <h3 data-translate-key="arch_spark_title">Spark</h3>
+            <ul>
+                <li data-translate-key="arch_spark_p1"><strong>Spark Master:</strong> The "team leader" that receives your job and allocates resources for the work to be done.</li>
+                <li data-translate-key="arch_spark_p2"><strong>Spark Worker:</strong> The "doer" that executes the tasks. It asks the Namenode for data locations and then gets the data directly from the Datanodes to process it.</li>
+            </ul>
         </div>
 
         <div id="Setup" class="tab-content">
@@ -306,7 +329,6 @@
                         <button class="copy-button" data-translate-key="copy_button">Copy</button>
                     </div>
                     <pre><code>version: '3.8'
-# ... (docker-compose content is unchanged)
 services:
   spark-master:
     image: bde2020/spark-master:3.3.0-hadoop3.3
@@ -384,7 +406,7 @@ volumes:
 
         <div id="FirstJob" class="tab-content">
             <h2 data-translate-key="job_title">Running Your First Job: Word Count</h2>
-            <p data-translate-key="job_p1">Data flows from input on HDFS, gets processed by Spark, and the result is printed back to your screen.</p>
+            <p data-translate-key="job_p1">Data flows from HDFS, gets processed by Spark, and the result is printed back to your screen.</p>
             
             <div class="step">
                 <h3 data-translate-key="job_step1_heading">Enter the Namenode Container</h3>
@@ -460,19 +482,60 @@ is: 1</code></pre>
 
     <script>
         // --- 1. TRANSLATION DATA ---
-        // All text content is stored here. Add new languages or keys as needed.
         const translations = {
             main_title: {
                 en: 'Guide: Create Big Data Cluster Using Docker',
                 vi: 'Hướng dẫn: Tạo Cụm Big Data với Docker'
             },
+            // NEW keys for architecture tab
+            tab_architecture: {
+                en: 'Architecture',
+                vi: 'Kiến trúc'
+            },
+            arch_title: {
+                en: 'The Big Picture: Our Architecture',
+                vi: 'Bức tranh Toàn cảnh: Kiến trúc Hệ thống'
+            },
+            arch_intro: {
+                en: 'This guide uses a simple, four-container setup to create a mini big data ecosystem on your local machine.',
+                vi: 'Hướng dẫn này sử dụng một thiết lập đơn giản gồm bốn container để tạo ra một hệ sinh thái dữ liệu lớn thu nhỏ trên máy cục bộ của bạn.'
+            },
+            alt_arch_diagram: {
+                en: 'Architecture Diagram',
+                vi: 'Sơ đồ Kiến trúc'
+            },
+            arch_hadoop_title: {
+                en: 'Hadoop (HDFS)',
+                vi: 'Hadoop (HDFS)'
+            },
+            arch_hadoop_p1: {
+                en: '<strong>Namenode:</strong> The "manager" that keeps track of all file locations. It knows which pieces of a file are on which Datanode.',
+                vi: '<strong>Namenode:</strong> "Người quản lý" theo dõi vị trí của tất cả các tệp. Nó biết phần nào của tệp đang ở trên Datanode nào.'
+            },
+            arch_hadoop_p2: {
+                en: '<strong>Datanode:</strong> The "storage unit" that physically stores blocks of data and serves them when requested.',
+                vi: '<strong>Datanode:</strong> "Đơn vị lưu trữ" chứa các khối dữ liệu vật lý và cung cấp chúng khi được yêu cầu.'
+            },
+            arch_spark_title: {
+                en: 'Spark',
+                vi: 'Spark'
+            },
+            arch_spark_p1: {
+                en: '<strong>Spark Master:</strong> The "team leader" that receives your job and allocates resources for the work to be done.',
+                vi: '<strong>Spark Master:</strong> "Trưởng nhóm" nhận công việc của bạn và phân bổ tài nguyên để thực hiện công việc.'
+            },
+            arch_spark_p2: {
+                en: '<strong>Spark Worker:</strong> The "doer" that executes the tasks. It asks the Namenode for data locations and then gets the data directly from the Datanodes to process it.',
+                vi: '<strong>Spark Worker:</strong> "Người thực thi" các tác vụ. Nó hỏi Namenode về vị trí dữ liệu, sau đó lấy dữ liệu trực tiếp từ các Datanode để xử lý.'
+            },
+            // Existing keys
             tab_setup: {
-                en: '🛠️ Setup Guide',
-                vi: '🛠️ Hướng dẫn Cài đặt'
+                en: 'Setup Guide',
+                vi: 'Hướng dẫn Cài đặt'
             },
             tab_first_job: {
-                en: '📝 First Job',
-                vi: '📝 Chạy Job Đầu tiên'
+                en: 'First Job',
+                vi: 'Chạy Job Đầu tiên'
             },
             setup_title: {
                 en: 'The Setup: 3 Simple Steps',
@@ -571,19 +634,23 @@ is: 1</code></pre>
             currentLang = lang;
             localStorage.setItem('preferredLanguage', lang);
             
-            // Update all elements with a translation key
             document.querySelectorAll('[data-translate-key]').forEach(el => {
                 const key = el.getAttribute('data-translate-key');
                 if (translations[key] && translations[key][lang]) {
-                    // Use innerHTML to render tags like <code> or <a>
                     el.innerHTML = translations[key][lang];
                 }
             });
 
-            // Update the page title
+            // Handle image alt text separately
+            document.querySelectorAll('[data-translate-alt]').forEach(el => {
+                const key = el.getAttribute('data-translate-alt');
+                if (translations[key] && translations[key][lang]) {
+                    el.alt = translations[key][lang];
+                }
+            });
+
             document.title = translations.main_title[lang];
 
-            // Update active state on language buttons
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if (btn.getAttribute('data-lang') === lang) {
@@ -616,6 +683,7 @@ is: 1</code></pre>
                 const text = pre.innerText;
 
                 navigator.clipboard.writeText(text).then(() => {
+                    const originalText = button.innerText;
                     button.innerText = translations.copied_button[currentLang];
                     button.classList.add('copied');
                     setTimeout(() => {
@@ -630,11 +698,10 @@ is: 1</code></pre>
 
         // --- 4. INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Set the initial language
             changeLanguage(currentLang);
 
-            // Open the first tab by default
             try {
+                // This will now open the "Architecture" tab by default
                 document.querySelector('.tab-button').click();
             } catch (e) {
                 console.error("Could not open default tab: ", e);
