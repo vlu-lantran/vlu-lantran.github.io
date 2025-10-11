@@ -459,7 +459,7 @@ hdfs dfs -put test.txt /input</code></pre>
                         <span>python</span>
                         <button class="copy-button" data-translate-key="copy_button">Copy</button>
                     </div>
-                    <pre><code>text_file = sc.textFile("hdfs://namenode:9000/input/test.txt")
+                    <pre><code>text_file = sc.textFile("hdfs://namenode:8020/input/test.txt")
 counts = text_file.flatMap(lambda line: line.split(" ")) \
                  .map(lambda word: (word, 1)) \
                  .reduceByKey(lambda a, b: a + b)
