@@ -1,13 +1,15 @@
 import streamlit as st
 import random
 from datetime import datetime
+import hashlib 
 
+SEMESTER_KEY = 202503
 # --- CONFIGURATION ---
 NUM_CONCEPTUAL = 3  # Number of conceptual questions to select
 NUM_APPLIED_T1 = 3  # Number of Tier 1 (Basic) questions
-NUM_APPLIED_T2 = 6  # Number of Tier 2 (Join) questions
-NUM_APPLIED_T3 = 3  # Number of Tier 3 (Advanced) questions
-# Total questions = 3 + 3 + 6 + 3 = 15 questions
+NUM_APPLIED_T2 = 4  # Number of Tier 2 (Join) questions
+NUM_APPLIED_T3 = 5  # Number of Tier 3 (Advanced) questions
+# Total questions = 3 + 3 + 4 + 5 = 15 questions
 
 # --- QUESTION POOL (VIETNAMESE) ---
 CONCEPTUAL_QUESTIONS = [
@@ -107,7 +109,8 @@ def generate_questions(student_id_str):
 
     # --- Seed the random number generator for reproducibility ---
     # This is CRUCIAL: the same ID will always get the same "random" questions.
-    random.seed(s)
+    seed_value = s + SEMESTER_KEY
+    random.seed(seed_value)
 
     # --- Select questions from each pool ---
     conceptual = random.sample(CONCEPTUAL_QUESTIONS, NUM_CONCEPTUAL)
@@ -157,62 +160,26 @@ with st.expander("📚 Nhấn vào đây để xem Mô tả Bộ dữ liệu"):
         | `web_events.json` | JSONL | ~2.0 GB | Nhật ký sự kiện web thô từ hoạt động của người dùng trên nền tảng. |
 
         ---
-        #### Chi tiết Lược đồ (Schema)
+        #### Giới thiệu về Bộ dữ liệu
 
         1. `customers.csv`
 
         Chứa thông tin tài khoản cho mỗi khách hàng.
-        | Tên cột              | Kiểu dữ liệu | Mô tả                                                     |
-        |-----------------------|--------------|-----------------------------------------------------------|
-        | customer_id           | Integer      | Mã định danh duy nhất cho mỗi khách hàng. (Khóa chính)
-        | signup_date           | String       | Ngày khách hàng đăng ký (YYYY-MM-DD).
-        | city                  | String       | Thành phố của khách hàng (ví dụ: 'Ho Chi Minh City', 'Hanoi').
-        | last_active_platform  | String       | Nền tảng cuối cùng được sử dụng ('ios', 'android', 'web').
-        | is_premium_member     | Boolean      | `true` nếu khách hàng có đăng ký gói cao cấp.
 
         2. `products.csv`
 
         Danh sách tổng hợp tất cả các sản phẩm được bán trên ByteBazaar.
-        | Tên cột               | Kiểu dữ liệu | Mô tả                                                     |
-        |-----------------------|--------------|-----------------------------------------------------------|
-        | product_id            | Integer      | Mã định danh duy nhất cho mỗi sản phẩm. (Khóa chính)
-        | product_name          | String       | Tên của sản phẩm.
-        | category_l1           | String       | Danh mục sản phẩm cấp cao nhất (ví dụ: 'Electronics').
-        | category_l2           | String       | Danh mục phụ (ví dụ: 'Laptops').
-        | brand                 | String       | Thương hiệu sản phẩm (ví dụ: 'BrandA').
-        | base_price_vnd        | Long         | Giá tiêu chuẩn của sản phẩm bằng Việt Nam Đồng.
 
         3. `orders.parquet`
 
-        Đây là một tệp Parquet lớn chứa tất cả các đơn hàng đã hoàn thành, đã hủy và đã trả lại.
-        | Tên cột                  | Kiểu dữ liệu | Mô tả                                                     |
-        |--------------------------|--------------|-----------------------------------------------------------|
-        | order_id                 | String       | Mã định danh duy nhất cho đơn hàng.
-        | customer_id              | Integer      | Liên kết đến `customers.csv`. (Khóa ngoại)
-        | product_id               | Integer      | Liên kết đến `products.csv`. (Khóa ngoại)
-        | order_timestamp          | String       | Dấu thời gian của đơn hàng ở định dạng ISO 8601 (YYYY-MM-DDTHH:mm:ssZ).
-        | quantity                 | Integer      | Số lượng đơn vị đã mua.
-        | final_price_per_unit_vnd | Long         | Giá thực tế đã trả cho mỗi đơn vị sau khi giảm giá.
-        | order_status             | String       | 'COMPLETED', 'CANCELLED', hoặc 'RETURNED'.
+        Chứa tất cả các đơn hàng đã hoàn thành, đã hủy và đã trả lại.
 
         4. `web_events.json`
 
         Đây là tệp lớn nhất và phức tạp nhất, chứa nhật ký sự kiện thô. Tệp ở định dạng JSONL, trong đó mỗi dòng là một đối tượng JSON hoàn chỉnh.
-        | Tên cột               | Kiểu dữ liệu | Mô tả                                                     |
-        |-----------------------|--------------|-----------------------------------------------------------|
-        | event_timestamp       | Long         | Dấu thời gian Unix epoch tính bằng mili giây.
-        | session_id            | String       | ID duy nhất cho phiên của người dùng.
-        | customer_id           | Integer      | ID của khách hàng. Trường này có thể là `null` đối với người dùng ẩn danh.
-        | event_type            | String       | Hành động người dùng đã thực hiện ('page_view', 'add_to_cart', 'search').
-        | event_properties      | Struct/JSON  | Một nested JSON object với các chi tiết phụ thuộc vào `event_type`.
 
-        Ví dụ về cấu trúc `event_properties`:
+        Lưu ý: Cấu trúc `event_properties`: Một nested JSON object với các chi tiết phụ thuộc vào `event_type`.
 
-            Nếu event_type là 'page_view': `{"url": "...", "referrer": "..."}`
-
-            Nếu event_type là 'add_to_cart': `{"product_id": 12345, "quantity": 1}`
-
-            Nếu event_type là 'search': `{"search_query": "...", "results_count": 42}`
         ---
         #### Gợi ý 💡
         * **Nhiều định dạng tệp:** Đọc dữ liệu chính xác từ CSV, Parquet và JSONL.
