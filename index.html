@@ -1,720 +1,184 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guide: Create Big Data Cluster Using Docker</title> 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Source+Sans+Pro:wght@400;600&family=Fira+Code&display=swap" rel="stylesheet">
+    <title>Bài Kiểm Tra - AI Fundamentals</title>
     <style>
-        /* --- 1. Variables and General Setup --- */
-        :root {
-            --primary-color: #007bff;
-            --primary-hover: #0056b3;
-            --secondary-color: #6c757d;
-            --background-color: #f8f9fa;
-            --surface-color: #ffffff;
-            --text-color: #343a40;
-            --heading-color: #212529;
-            --border-color: #dee2e6;
-            --code-bg: #2d333b;
-            --code-text: #cdd9e5;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            --border-radius: 10px;
-        }
-
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Source Sans Pro', sans-serif;
-            line-height: 1.7;
-            margin: 0;
-            color: var(--text-color);
-            background-color: var(--background-color);
-            -webkit-font-smoothing: antialiased;
+            font-family: "Courier New", Courier, monospace;
+            background-color: #f4f4f9;
+            color: #111;
+            padding: 40px;
             position: relative;
-        }
-
-        .container {
-            width: 100%;
-            min-height: 100vh;
-            margin: 0;
-            padding: 2rem 5%;
-            background: var(--surface-color);
-            border-radius: 0;
-            box-shadow: none;
+            user-select: none; /* Prevent text selection */
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            line-height: 1.6;
         }
         
-        /* --- 2. Typography --- */
-        h1, h2, h3 {
-            font-family: 'Poppins', sans-serif;
-            color: var(--heading-color);
-            line-height: 1.3;
-            margin-top: 0;
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 2.5rem;
-            background: linear-gradient(45deg, #007bff, #0056b3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 2rem;
-            padding-top: 3rem; /* Add padding to avoid overlap with language switcher */
-        }
-
-        h2 {
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 0.5rem;
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-        }
-
-        h3 {
-            font-size: 1.4rem;
-            color: var(--primary-hover);
-        }
-
-        p, ul {
-            max-width: 200ch; /* Adjusted for better readability */
-        }
-
-        a {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s ease;
-        }
-
-        a:hover {
-            color: var(--primary-hover);
-            text-decoration: underline;
-        }
-
-        /* --- 3. Tab System --- */
-        .tab-buttons {
-            display: flex;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 1.5rem;
-        }
-
-        .tab-button {
-            background-color: transparent;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 1rem 1.5rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            font-family: 'Poppins', sans-serif;
-            color: var(--secondary-color);
+        #content-layer {
             position: relative;
-            transition: color 0.3s ease;
-            flex-grow: 1; 
-            text-align: center;
-        }
-        .tab-button::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--primary-color);
-            transform: scaleX(0);
-            transition: transform 0.3s ease-in-out;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        .tab-button:hover {
-            color: var(--primary-hover);
-        }
+        h1 { color: #d32f2f; text-align: center; }
+        h3 { color: #1976d2; margin-top: 30px; }
         
-        .tab-button.active {
-            color: var(--primary-color);
-        }
-        .tab-button.active::after {
-            transform: scaleX(1);
-        }
-
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- 4. Code Blocks --- */
-        .code-block-wrapper {
-            background-color: var(--code-bg);
-            border-radius: var(--border-radius);
-            margin: 1.5rem 0;
-            box-shadow: var(--shadow);
-            overflow: hidden;
-        }
-        .code-block-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #3c424d;
-            padding: 0.5rem 1rem;
-            color: #adb5bd;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.9em;
-        }
-        .copy-button {
-            background: #4a515c;
-            color: var(--code-text);
-            border: none;
-            padding: 0.3rem 0.6rem;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-        .copy-button:hover {
-            background: #5a626d;
-        }
-        .copy-button.copied {
-            background: #28a745;
-            color: white;
-        }
-
         pre {
-            margin: 0;
-            padding: 1.2rem;
-            overflow-x: auto;
-            color: var(--code-text);
-            background-color: var(--code-bg);
-            font-family: 'Fira Code', monospace;
-            font-size: 0.95em;
-        }
-        code { font-family: inherit; }
-
-        /* --- 5. Custom Components --- */
-        .step {
-            background-color: #e9ecef4d;
-            border-left: 5px solid var(--primary-color);
-            padding: 0.1rem 1.5rem 1.5rem;
-            margin: 2rem 0;
-            border-radius: 0 var(--border-radius) var(--border-radius) 0;
-            position: relative;
-        }
-
-        body { counter-reset: step-counter; }
-        .step h3::before {
-            counter-increment: step-counter;
-            content: counter(step-counter);
-            background: var(--primary-color);
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.2rem;
-            margin-right: 0.8rem;
-            line-height: 1;
-        }
-        .tab-content { counter-reset: step-counter; }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            margin: 1rem 0;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* --- 6. Language Switcher --- */
-        .language-switcher {
-            position: absolute;
-            top: 20px;
-            right: 5%;
-            display: flex;
-            gap: 5px;
-            background: #fff;
-            padding: 5px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            z-index: 1000;
-        }
-        .lang-btn {
-            padding: 0.4rem 0.8rem;
-            border: 1px solid var(--border-color);
-            background-color: transparent;
-            color: var(--secondary-color);
-            font-weight: 600;
-            cursor: pointer;
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
             border-radius: 5px;
-            transition: all 0.2s ease-in-out;
-        }
-        .lang-btn:hover {
-            background-color: #f1f1f1;
-            color: var(--text-color);
-        }
-        .lang-btn.active {
-            background-color: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
+            overflow-x: auto;
+            font-size: 14px;
         }
 
-        /* --- 7. Responsive Design --- */
-        @media (max-width: 768px) {
-            .container {
-                margin: 0;
-                padding: 1.5rem;
-            }
-            h1 { font-size: 2rem; }
-            .tab-buttons { flex-wrap: wrap; }
-            .tab-button { padding: 0.8rem 1rem; font-size: 1rem; }
-            .language-switcher {
-                top: 10px;
-                right: 15px;
-            }
+        code { font-family: "Courier New", Courier, monospace; }
+
+        /* Anti-OCR Text Distortions */
+        .obfuscate {
+            display: inline-block;
+            text-shadow: 1px 1px 0px rgba(0,0,0,0.1), -1px -1px 0px rgba(255,255,255,0.3);
+        }
+
+        /* Overlay Canvas */
+        #noise-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none; /* Let clicks pass through */
+            z-index: 9999;
+            opacity: 0.45; /* Adjust opacity for difficulty */
         }
     </style>
 </head>
 <body>
+    <canvas id="noise-canvas"></canvas>
 
-    <div class="language-switcher">
-        <button onclick="changeLanguage('en')" class="lang-btn" data-lang="en">EN</button>
-        <button onclick="changeLanguage('vi')" class="lang-btn" data-lang="vi">VI</button>
+    <div id="content-layer">
+        <h1>BÀI KIỂM TRA GIỮA KÌ SỐ 2</h1>
+
+        <div class="exam-text">
+            <h3>Câu 1: Thuật toán Naive Bayes</h3>
+            <p>Đoạn mã mẫu dưới đây sử dụng thư viện sklearn để huấn luyện mô hình Multinomial Naive Bayes và dự đoán cho mẫu e6.</p>
+            
+            <pre><code>#Naive Bayes classifier
+from sklearn.naive_bayes import MultinomialNB
+import numpy as np
+
+# Training data
+e1 = [2, 1, 2, 2, 2, 2]
+e2 = [2, 2, 2, 1, 2, 2]
+e3 = [1, 0, 2, 1, 2, 0]
+e4 = [2, 0, 1, 1, 2, 1]
+e5 = [1, 1, 1, 2, 0, 1]
+e6 = [2, 2, 0, 1, 1, 2]
+train_data = np.array([e1, e2, e3, e4, e5, e6])
+ket_qua = np.array(['yes', 'yes', 'no', 'no', 'no', 'yes'])
+
+# Test data
+test_1 = [2, 1, 2, 1, 2, 0]
+test_2 = [1, 0, 1, 2, 2, 1]
+test_data = np.array([test_1, test_2])
+
+ml = MultinomialNB(alpha=1)
+ml.fit(train_data, ket_qua)
+print('Probability of test_data :\n', ml.predict_proba(test_data))
+print('Predicting class of test_data :', ml.predict(test_data))</code></pre>
+
+            <p><strong>Yêu cầu lập trình:</strong> Hãy viết mã Python (không sử dụng hàm fit hay predict_proba của sklearn cho phần tính toán chính) để thực hiện từng bước tính toán chi tiết cho quá trình TRAINING và TEST. Mã của bạn cần tính toán và in ra màn hình các giá trị sau:</p>
+            <ul>
+                <li><strong>Bước 1:</strong> Xác suất tiên nghiệm (Prior probability) của lớp 'yes' và lớp 'no'.</li>
+                <li><strong>Bước 2:</strong> Xác suất hậu nghiệm (Posterior probability) cuối cùng của mẫu e6. Đối chiếu kết quả với đầu ra [0.63078213 0.36921787].</li>
+            </ul>
+        </div>
+
+        <hr style="margin: 40px 0; border: 1px dashed #ccc;">
+
+        <div class="exam-text">
+            <h3>Câu 2: Cập nhật Q-Learning</h3>
+            <p>Cho một mê cung có kích thước 5x5, vị trí bắt đầu (0,0), vị trí kết thúc (4,4) và danh sách các chướng ngại vật như trong đoạn mã mẫu.</p>
+
+<pre><code>#Đọc cột trước - hàng sau
+maze_size = 8           #kích thước mê cung
+obstacles = [(3,0),(1,1),(3,1),(1,2),(3,3), (4,5), (5,5), (6,2), (6,3), (2,6), (7,1)]   #vị trí vật cản
+start = (0,0)           #bắt đầu
+goal = (7,7)            #kết thúc
+
+#kiểm tra vị trí nhất định của (x,y) có hợp lệ di chuyển hay không
+def is_valid(x,y):
+    return (0 <= x < maze_size) and (0 <= y < maze_size) and (x,y) not in obstacles</code></pre>
+
+            <p><strong>Yêu cầu lập trình:</strong> Hãy viết mã Python để thực hiện quá trình khởi tạo và cập nhật một bước tính toán của Q-Learning dựa trên phương trình Bellman.
+        </div>
     </div>
 
-    <main class="container">
-        <h1 data-translate-key="main_title">Guide: Create Big Data Cluster Using Docker</h1>
-
-        <div class="tab-buttons">
-            <button class="tab-button" onclick="openTab(event, 'Architecture')" data-translate-key="tab_architecture">Architecture</button>
-            <button class="tab-button" onclick="openTab(event, 'Setup')" data-translate-key="tab_setup">Setup Guide</button>
-            <button class="tab-button" onclick="openTab(event, 'FirstJob')" data-translate-key="tab_first_job">First Job</button>
-        </div>
-
-        <div id="Architecture" class="tab-content">
-            <h2 data-translate-key="arch_title">The Big Picture: Our Architecture</h2>
-            <p data-translate-key="arch_intro">This guide uses a simple, four-container setup to create a mini big data ecosystem on your local machine.</p>
-            
-            <img src="images/diagram.png" data-translate-alt="alt_arch_diagram" alt="Architecture Diagram" style="width:100%; max-width:1200px; border: 1px solid #ccc;">
-
-            <h3 data-translate-key="arch_hadoop_title">Hadoop (HDFS)</h3>
-            <ul>
-                <li data-translate-key="arch_hadoop_p1"><strong>Namenode:</strong> The "manager" that keeps track of all file locations. It knows which pieces of a file are on which Datanode.</li>
-                <li data-translate-key="arch_hadoop_p2"><strong>Datanode:</strong> The "storage unit" that physically stores blocks of data and serves them when requested.</li>
-            </ul>
-
-            <h3 data-translate-key="arch_spark_title">Spark</h3>
-            <ul>
-                <li data-translate-key="arch_spark_p1"><strong>Spark Master:</strong> The "team leader" that receives your job and allocates resources for the work to be done.</li>
-                <li data-translate-key="arch_spark_p2"><strong>Spark Worker:</strong> The "doer" that executes the tasks. It asks the Namenode for data locations and then gets the data directly from the Datanodes to process it.</li>
-            </ul>
-        </div>
-
-        <div id="Setup" class="tab-content">
-            <h2 data-translate-key="setup_title">The Setup: 3 Simple Steps</h2>
-            <div class="step">
-                <h3 data-translate-key="step1_heading">Create the Blueprint</h3>
-                <p data-translate-key="step1_p1">Create a folder for your project, and inside it, a file named <code>docker-compose.yml</code>. Paste this code:</p>
-                <div class="code-block-wrapper">
-                    <div class="code-block-header">
-                        <span>docker-compose.yml</span>
-                        <button class="copy-button" data-translate-key="copy_button">Copy</button>
-                    </div>
-                    <pre><code>version: '3.8'
-
-services:
-  spark-master:
-    image: bde2020/spark-master:3.3.0-hadoop3.3
-    container_name: spark-master
-    ports:
-      - "8080:8080"
-      - "7077:7077"
-    environment:
-      - INIT_DAEMON_STEP=setup_spark
-    networks:
-      - bigdata_network
-
-  spark-worker:
-    image: bde2020/spark-worker:3.3.0-hadoop3.3
-    container_name: spark-worker
-    depends_on:
-      - spark-master
-    ports:
-      - "8081:8081"
-    environment:
-      - SPARK_MASTER=spark://spark-master:7077
-    networks:
-      - bigdata_network
-
-  namenode:
-    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
-    container_name: namenode
-    ports:
-      - "9870:9870"
-    volumes:
-      - hadoop_namenode:/hadoop/dfs/name
-    environment:
-      - CLUSTER_NAME=test
-      - "CORE_CONF_fs_defaultFS=hdfs://namenode:8020"
-    networks:
-      - bigdata_network
-
-  datanode:
-    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
-    container_name: datanode
-    # hostname: localhost
-    depends_on:
-      - namenode
-    volumes:
-      - hadoop_datanode:/hadoop/dfs/data
-    environment:
-      - SERVICE_PRECONDITION=namenode:9870
-      - "CORE_CONF_fs_defaultFS=hdfs://namenode:8020"
-    networks:
-      - bigdata_network
-
-networks:
-  bigdata_network:
-    driver: bridge
-
-volumes:
-  hadoop_namenode:
-  hadoop_datanode:
-</code></pre>
-                </div>
-            </div>
-            <div class="step">
-                <h3 data-translate-key="step2_heading">Launch the Cluster</h3>
-                <p data-translate-key="step2_p1">In your terminal, from the same folder, run this command:</p>
-                <div class="code-block-wrapper">
-                    <div class="code-block-header">
-                        <span>bash</span>
-                        <button class="copy-button" data-translate-key="copy_button">Copy</button>
-                    </div>
-                    <pre><code>docker-compose up -d</code></pre>
-                </div>
-            </div>
-            <div class="step">
-                <h3 data-translate-key="step3_heading">Verify Everything is Working</h3>
-                <p data-translate-key="step3_p1">Check the web dashboards.</p>
-                <p><strong>1. Spark UI: <a href="http://localhost:8080" target="_blank">http://localhost:8080</a></strong></p>
-                <img src="images/spark_ui.png" alt="Spark UI" style="width:100%; max-width:600px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px;">
-                <p><strong data-translate-key="step3_p2_strong">2. HDFS UI: <a href="http://localhost:9870" target="_blank">http://localhost:9870</a></strong> <span data-translate-key="step3_p2_span">(Go to the "Datanodes" tab to verify)</span></p>
-                <img src="images/hdfs_ui.png" alt="HDFS UI" style="width:100%; max-width:600px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px;">
-            </div>
-        </div>
-
-        <div id="FirstJob" class="tab-content">
-            <h2 data-translate-key="job_title">Running Your First Job: Word Count</h2>
-            <p data-translate-key="job_p1">Data flows from HDFS, gets processed by Spark, and the result is printed back to your screen.</p>
-            
-            <div class="step">
-                <h3 data-translate-key="job_step1_heading">Enter the Namenode Container</h3>
-                <p data-translate-key="job_step1_p1">We'll use the Namenode to put data into our distributed file system. Open a terminal and type:</p>
-                <div class="code-block-wrapper">
-                    <div class="code-block-header">
-                        <span>bash</span>
-                        <button class="copy-button" data-translate-key="copy_button">Copy</button>
-                    </div>
-                    <pre><code>docker exec -it namenode bash</code></pre>
-                </div>
-            </div>
-            <div class="step">
-                <h3 data-translate-key="job_step2_heading">Add Data to HDFS</h3>
-                <p data-translate-key="job_step2_p1">First, create a simple text file inside the container, then copy it into HDFS:</p>
-                <div class="code-block-wrapper">
-                    <div class="code-block-header">
-                        <span>bash</span>
-                        <button class="copy-button" data-translate-key="copy_button">Copy</button>
-                    </div>
-                    <pre><code># Create a local file inside the container
-echo "hello spark hello hadoop spark is great" > test.txt
-
-# Create a directory in HDFS and put the file there
-hdfs dfs -mkdir -p /input
-hdfs dfs -put test.txt /input</code></pre>
-                </div>
-            </div>
-            <div class="step">
-                <h3 data-translate-key="job_step3_heading">Run the PySpark Code</h3>
-                <p data-translate-key="job_step3_p1">Open <strong>another terminal</strong> and connect to the Spark Master container to run the job:</p>
-                <div class="code-block-wrapper">
-                    <div class="code-block-header">
-                        <span>bash</span>
-                        <button class="copy-button" data-translate-key="copy_button">Copy</button>
-                    </div>
-                    <pre><code>docker exec -it spark-master /spark/bin/pyspark</code></pre>
-                </div>
-                <p data-translate-key="job_step3_p2">Once inside the PySpark shell, enter the following Python code line by line:</p>
-                <div class="code-block-wrapper">
-                    <div class="code-block-header">
-                        <span>python</span>
-                        <button class="copy-button" data-translate-key="copy_button">Copy</button>
-                    </div>
-                    <pre><code>text_file = sc.textFile("hdfs://namenode:8020/input/test.txt")
-counts = text_file.flatMap(lambda line: line.split(" ")) \
-                 .map(lambda word: (word, 1)) \
-                 .reduceByKey(lambda a, b: a + b)
-output = counts.collect()
-for (word, count) in output:
-    print(f"{word}: {count}")
-
-exit()</code></pre>
-                </div>
-            </div>
-            <div class="step">
-                <h3 data-translate-key="job_step4_heading">Check Your Result!</h3>
-                <p data-translate-key="job_step4_p1">You should see the final counts printed to your screen:</p>
-                <div class="code-block-wrapper">
-                    <div class="code-block-header">
-                        <span>output</span>
-                        <button class="copy-button" data-translate-key="copy_button">Copy</button>
-                    </div>
-                    <pre><code>hello: 2
-great: 1
-spark: 2
-hadoop: 1
-is: 1</code></pre>
-                </div>
-            </div>
-        </div>
-    </main>
-
     <script>
-        // --- 1. TRANSLATION DATA ---
-        const translations = {
-            main_title: {
-                en: 'Guide: Create Big Data Cluster Using Docker',
-                vi: 'Hướng dẫn: Tạo Cụm Big Data với Docker'
-            },
-            // NEW keys for architecture tab
-            tab_architecture: {
-                en: 'Architecture',
-                vi: 'Kiến trúc'
-            },
-            arch_title: {
-                en: 'The Big Picture: Our Architecture',
-                vi: 'Bức tranh Toàn cảnh: Kiến trúc Hệ thống'
-            },
-            arch_intro: {
-                en: 'This guide uses a simple, four-container setup to create a mini big data ecosystem on your local machine.',
-                vi: 'Hướng dẫn này sử dụng một thiết lập đơn giản gồm bốn container để tạo ra một hệ sinh thái dữ liệu lớn thu nhỏ trên máy cục bộ của bạn.'
-            },
-            alt_arch_diagram: {
-                en: 'Architecture Diagram',
-                vi: 'Sơ đồ Kiến trúc'
-            },
-            arch_hadoop_title: {
-                en: 'Hadoop (HDFS)',
-                vi: 'Hadoop (HDFS)'
-            },
-            arch_hadoop_p1: {
-                en: '<strong>Namenode:</strong> The "manager" that keeps track of all file locations. It knows which pieces of a file are on which Datanode.',
-                vi: '<strong>Namenode:</strong> "Người quản lý" theo dõi vị trí của tất cả các tệp. Nó biết phần nào của tệp đang ở trên Datanode nào.'
-            },
-            arch_hadoop_p2: {
-                en: '<strong>Datanode:</strong> The "storage unit" that physically stores blocks of data and serves them when requested.',
-                vi: '<strong>Datanode:</strong> "Đơn vị lưu trữ" chứa các khối dữ liệu vật lý và cung cấp chúng khi được yêu cầu.'
-            },
-            arch_spark_title: {
-                en: 'Spark',
-                vi: 'Spark'
-            },
-            arch_spark_p1: {
-                en: '<strong>Spark Master:</strong> The "team leader" that receives your job and allocates resources for the work to be done.',
-                vi: '<strong>Spark Master:</strong> "Trưởng nhóm" nhận công việc của bạn và phân bổ tài nguyên để thực hiện công việc.'
-            },
-            arch_spark_p2: {
-                en: '<strong>Spark Worker:</strong> The "doer" that executes the tasks. It asks the Namenode for data locations and then gets the data directly from the Datanodes to process it.',
-                vi: '<strong>Spark Worker:</strong> "Người thực thi" các tác vụ. Nó hỏi Namenode về vị trí dữ liệu, sau đó lấy dữ liệu trực tiếp từ các Datanode để xử lý.'
-            },
-            // Existing keys
-            tab_setup: {
-                en: 'Setup Guide',
-                vi: 'Hướng dẫn Cài đặt'
-            },
-            tab_first_job: {
-                en: 'First Job',
-                vi: 'Chạy Job Đầu tiên'
-            },
-            setup_title: {
-                en: 'The Setup: 3 Simple Steps',
-                vi: 'Cài đặt: 3 Bước Đơn giản'
-            },
-            step1_heading: {
-                en: 'Create the Blueprint',
-                vi: 'Tạo Bản thiết kế (Blueprint)'
-            },
-            step1_p1: {
-                en: 'Create a folder for your project, and inside it, a file named <code>docker-compose.yml</code>. Paste this code:',
-                vi: 'Tạo một thư mục cho dự án của bạn, và bên trong nó, tạo một tệp tin tên là <code>docker-compose.yml</code>. Dán đoạn mã này vào:'
-            },
-            step2_heading: {
-                en: 'Launch the Cluster',
-                vi: 'Khởi chạy Cụm (Cluster)'
-            },
-            step2_p1: {
-                en: 'In your terminal, from the same folder, run this command:',
-                vi: 'Trong terminal của bạn, từ cùng thư mục, chạy lệnh này:'
-            },
-            step3_heading: {
-                en: 'Verify Everything is Working',
-                vi: 'Kiểm tra Mọi thứ Hoạt động'
-            },
-            step3_p1: {
-                en: 'Check the web dashboards.',
-                vi: 'Kiểm tra các trang quản trị web.'
-            },
-            step3_p2_strong: {
-                en: '2. HDFS UI: <a href="http://localhost:9870" target="_blank">http://localhost:9870</a>',
-                vi: '2. Giao diện HDFS: <a href="http://localhost:9870" target="_blank">http://localhost:9870</a>'
-            },
-            step3_p2_span: {
-                en: '(Go to the "Datanodes" tab to verify)',
-                vi: '(Đi tới tab "Datanodes" để xác minh)'
-            },
-            job_title: {
-                en: 'Running Your First Job: Word Count',
-                vi: 'Chạy Job Đầu tiên: Đếm từ (Word Count)'
-            },
-            job_p1: {
-                en: 'Data flows from HDFS, gets processed by Spark, and the result is printed back to your screen.',
-                vi: 'Dữ liệu sẽ đi từ HDFS, được xử lý bởi Spark, và kết quả được in trở lại màn hình của bạn.'
-            },
-            job_step1_heading: {
-                en: 'Enter the Namenode Container',
-                vi: 'Truy cập vào Container Namenode'
-            },
-            job_step1_p1: {
-                en: 'We\'ll use the Namenode to put data into our distributed file system. Open a terminal and type:',
-                vi: 'Chúng ta sẽ dùng Namenode để đưa dữ liệu vào hệ thống tệp phân tán. Mở một terminal và gõ lệnh:'
-            },
-            job_step2_heading: {
-                en: 'Add Data to HDFS',
-                vi: 'Thêm Dữ liệu vào HDFS'
-            },
-            job_step2_p1: {
-                en: 'First, create a simple text file inside the container, then copy it into HDFS:',
-                vi: 'Đầu tiên, tạo một tệp văn bản đơn giản bên trong container, sau đó sao chép nó vào HDFS:'
-            },
-            job_step3_heading: {
-                en: 'Run the PySpark Code',
-                vi: 'Chạy mã PySpark'
-            },
-            job_step3_p1: {
-                en: 'Open <strong>another terminal</strong> and connect to the Spark Master container to run the job:',
-                vi: 'Mở một <strong>terminal khác</strong> và kết nối vào container Spark Master để chạy job:'
-            },
-            job_step3_p2: {
-                en: 'Once inside the PySpark shell, enter the following Python code line by line:',
-                vi: 'Khi đã vào trong PySpark shell, nhập đoạn mã Python sau đây, từng dòng một:'
-            },
-            job_step4_heading: {
-                en: 'Check Your Result!',
-                vi: 'Kiểm tra Kết quả của Bạn!'
-            },
-            job_step4_p1: {
-                en: 'You should see the final counts printed to your screen:',
-                vi: 'Bạn sẽ thấy kết quả đếm cuối cùng được in ra màn hình:'
-            },
-            copy_button: {
-                en: 'Copy',
-                vi: 'Sao chép'
-            },
-            copied_button: {
-                en: 'Copied!',
-                vi: 'Đã chép!'
-            }
-        };
-
-        // --- 2. LANGUAGE SWITCHING LOGIC ---
-        let currentLang = localStorage.getItem('preferredLanguage') || 'en';
-
-        function changeLanguage(lang) {
-            currentLang = lang;
-            localStorage.setItem('preferredLanguage', lang);
-            
-            document.querySelectorAll('[data-translate-key]').forEach(el => {
-                const key = el.getAttribute('data-translate-key');
-                if (translations[key] && translations[key][lang]) {
-                    el.innerHTML = translations[key][lang];
-                }
-            });
-
-            // Handle image alt text separately
-            document.querySelectorAll('[data-translate-alt]').forEach(el => {
-                const key = el.getAttribute('data-translate-alt');
-                if (translations[key] && translations[key][lang]) {
-                    el.alt = translations[key][lang];
-                }
-            });
-
-            document.title = translations.main_title[lang];
-
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.getAttribute('data-lang') === lang) {
-                    btn.classList.add('active');
-                }
-            });
-        }
-
-        // --- 3. EXISTING PAGE FUNCTIONALITY ---
-        function openTab(evt, tabName) {
-            let i, tabcontent, tabbuttons;
-            
-            tabcontent = document.getElementsByClassName("tab-content");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            
-            tabbuttons = document.getElementsByClassName("tab-button");
-            for (i = 0; i < tabbuttons.length; i++) {
-                tabbuttons[i].classList.remove("active");
-            }
-            
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.classList.add("active");
-        }
-
-        document.querySelectorAll('.copy-button').forEach(button => {
-            button.addEventListener('click', () => {
-                const pre = button.closest('.code-block-wrapper').querySelector('pre');
-                const text = pre.innerText;
-
-                navigator.clipboard.writeText(text).then(() => {
-                    const originalText = button.innerText;
-                    button.innerText = translations.copied_button[currentLang];
-                    button.classList.add('copied');
-                    setTimeout(() => {
-                        button.innerText = translations.copy_button[currentLang];
-                        button.classList.remove('copied');
-                    }, 2000);
-                }).catch(err => {
-                    console.error('Failed to copy: ', err);
-                });
-            });
+        // 1. Zero-width space injection (Anti Copy-Paste & Basic Text Extraction)
+        document.querySelectorAll('.exam-text p, .exam-text li').forEach(el => {
+            let words = el.innerText.split(' ');
+            let obfuscatedHTML = words.map(word => {
+                let newWord = word.split('').join('&#8203;'); // Insert invisible spaces
+                // Random slight rotation to confuse OCR bounding boxes
+                let angle = (Math.random() * 2 - 1).toFixed(2); 
+                return `<span class="obfuscate" style="transform: rotate(${angle}deg);">${newWord}</span>`;
+            }).join(' ');
+            el.innerHTML = obfuscatedHTML;
         });
 
-        // --- 4. INITIALIZATION ---
-        document.addEventListener('DOMContentLoaded', () => {
-            changeLanguage(currentLang);
+        // 2. Draw Anti-AI Vision CAPTCHA-like Noise Overlay
+        const canvas = document.getElementById('noise-canvas');
+        const ctx = canvas.getContext('2d');
 
-            try {
-                // This will now open the "Architecture" tab by default
-                document.querySelector('.tab-button').click();
-            } catch (e) {
-                console.error("Could not open default tab: ", e);
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            drawNoise();
+        }
+
+        function drawNoise() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw random intersecting lines
+            for (let i = 0; i < 150; i++) {
+                ctx.beginPath();
+                ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                ctx.strokeStyle = `rgba(0, 0, 0, ${Math.random() * 0.15 + 0.05})`; // Semi-transparent black/grey lines
+                ctx.lineWidth = Math.random() * 2 + 1;
+                ctx.stroke();
             }
-        });
+
+            // Draw wavy bezier curves (Harder for OCR to filter out)
+            for (let i = 0; i < 50; i++) {
+                ctx.beginPath();
+                ctx.moveTo(0, Math.random() * canvas.height);
+                ctx.bezierCurveTo(
+                    canvas.width / 3, Math.random() * canvas.height, 
+                    (canvas.width / 3) * 2, Math.random() * canvas.height, 
+                    canvas.width, Math.random() * canvas.height
+                );
+                ctx.strokeStyle = `rgba(50, 50, 50, ${Math.random() * 0.1 + 0.05})`;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+            }
+
+            // Add static noise dots
+            for (let i = 0; i < 5000; i++) {
+                ctx.fillStyle = `rgba(0, 0, 0, ${Math.random() * 0.2})`;
+                ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 2, 2);
+            }
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
     </script>
 </body>
 </html>
